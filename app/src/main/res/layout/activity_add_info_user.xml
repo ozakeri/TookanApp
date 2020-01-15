@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:showIn="@layout/activity_add_info_user"
+    android:background="@color/background">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar_layout"/>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_user"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp"
+                android:background="@drawable/border_user_image"
+                android:padding="10dp" />
+
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_nameFamily"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_title"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_phoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_mobileNumber"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_address"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext"
+                android:singleLine="false"/>
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_site"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_username"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_password"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <com.tokan.ir.widget.BEditTextView
+                android:id="@+id/edt_confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="@dimen/margin_edittext" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height"
+                android:layout_margin="20dp"
+                android:background="@drawable/border_button"
+                android:onClick="action"
+                android:textColor="@android:color/white"
+                android:text="ثبت نام و شروع" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
