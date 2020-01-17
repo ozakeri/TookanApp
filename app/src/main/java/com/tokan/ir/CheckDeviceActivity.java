@@ -1,5 +1,6 @@
 package com.tokan.ir;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,6 +44,6 @@ public class CheckDeviceActivity extends AppCompatActivity {
     }
 
     public void action(View view) {
-
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.TestLoginFragment"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_layout"/>
+
+        <com.tokan.ir.widget.BEditTextView
+            android:id="@+id/edt_nationalCode"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="@dimen/margin_edittext"
+            android:layout_below="@+id/toolbar"/>
+
+        <com.tokan.ir.widget.BEditTextView
+            android:id="@+id/edt_nameFamily"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="@dimen/margin_edittext"
+            android:layout_below="@+id/edt_nationalCode"/>
+
+        <com.tokan.ir.widget.BEditTextView
+            android:id="@+id/edt_birthDate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="@dimen/margin_edittext"
+            android:layout_below="@+id/edt_nameFamily"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_action"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="20dp"
+            android:background="@drawable/border_button"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"
+            android:text="تست و اتصال به دستگاه" />
+    </RelativeLayout>
+
+</FrameLayout>
