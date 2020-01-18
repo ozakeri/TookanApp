@@ -20,6 +20,8 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.tokan.ir.widget.BTextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,11 +36,14 @@ public class WelcomeActivity extends AppCompatActivity {
     @BindView(R.id.btn_next)
     AppCompatButton btnNext;
 
-    @BindView(R.id.btn_skip)
-    AppCompatButton btnSkip;
+    @BindView(R.id.btn_back)
+    AppCompatButton btn_back;
 
     @BindView(R.id.btn_start)
     AppCompatButton btnStart;
+
+    @BindView(R.id.btn_backup)
+    BTextView btn_backup;
 
     private int[] layouts;
     private TextView[] dots;
@@ -58,6 +63,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        btn_backup.setText("بازیابی پشتیبان");
+
         // layouts of all welcome sliders
         // add few more layouts if you want
         layouts = new int[]{
@@ -76,10 +83,10 @@ public class WelcomeActivity extends AppCompatActivity {
         viewPager.setAdapter(myViewPagerAdapter);
         viewPager.addOnPageChangeListener(viewPagerPageChangeListener);
 
-        btnSkip.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchHomeScreen();
+
             }
         });
 
@@ -93,7 +100,8 @@ public class WelcomeActivity extends AppCompatActivity {
                     // move to next screen
                     viewPager.setCurrentItem(current);
                 } else {
-                    launchHomeScreen();
+                    current = getItem(+1);
+                    viewPager.setCurrentItem(current);
                 }
             }
         });
@@ -101,7 +109,7 @@ public class WelcomeActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Strart-=-=--");
+                launchHomeScreen();
             }
         });
 
@@ -133,12 +141,14 @@ public class WelcomeActivity extends AppCompatActivity {
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
-                btnNext.setText("Start");
-                btnSkip.setVisibility(View.GONE);
+                btnNext.setText("قبلی");
+                btn_back.setVisibility(View.GONE);
+                btnStart.setVisibility(View.VISIBLE);
+                btn_backup.setVisibility(View.VISIBLE);
             } else {
                 // still pages are left
-                btnNext.setText("Next");
-                btnSkip.setVisibility(View.VISIBLE);
+                btnNext.setText("بعدی");
+                btn_back.setVisibility(View.VISIBLE);
             }
         }
 

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.ImageViewCompat;
 
 import com.tokan.ir.widget.BEditTextView;
 import com.tokan.ir.widget.BTextView;
@@ -43,6 +44,6 @@ public class CheckDeviceActivity extends AppCompatActivity {
     }
 
     public void action(View view) {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
 }
