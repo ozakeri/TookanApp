@@ -32,30 +32,46 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_user"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:background="@mipmap/ic_launcher"
+                android:layout_gravity="center_horizontal"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="action"
-                android:text="test"/>
+                android:text="test"
+                android:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="search"/>
+                android:text="search"
+                android:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_report"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="report"/>
+                android:text="report"
+                android:visibility="gone"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:text="setting"
                 android:id="@+id/btn_setting"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

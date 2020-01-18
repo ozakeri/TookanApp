@@ -3,6 +3,7 @@ package com.tokan.ir;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -20,7 +21,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.tokan.ir.database.DatabaseClient;
+import com.tokan.ir.entity.User;
 import com.tokan.ir.widget.BTextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +54,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private int[] layouts;
     private TextView[] dots;
     private MyViewPagerAdapter myViewPagerAdapter;
+    private List<User> userList = new ArrayList<>();
 
 
     @Override
@@ -109,14 +116,14 @@ public class WelcomeActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchHomeScreen();
+                getUserList();
+                //startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
             }
         });
 
     }
 
     private void launchHomeScreen() {
-
         startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
     }
 
@@ -222,4 +229,32 @@ public class WelcomeActivity extends AppCompatActivity {
     private int getItem(int i) {
         return viewPager.getCurrentItem() + i;
     }
+
+    public void getUserList() {
+        class GetUserList extends AsyncTask<Void, Void, List<User>> {
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                userList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().userDao().getUsers();
+                return userList;
+            }
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+
+                if (users.size() != 0){
+                    User user = users.get(0);
+                    if (user.isLoginIs()) {
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
+                }else {
+                    launchHomeScreen();
+                }
+            }
+        }
+
+        new GetUserList().execute();
+    }
+
 }

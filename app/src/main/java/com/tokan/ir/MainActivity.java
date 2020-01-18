@@ -1,18 +1,25 @@
 package com.tokan.ir;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
-
-import com.tokan.ir.widget.drawer.DrawerList;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.tokan.ir.database.DatabaseClient;
+import com.tokan.ir.entity.User;
+import com.tokan.ir.widget.drawer.DrawerList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_test)
     AppCompatButton btn_test;
 
+    @BindView(R.id.img_user)
+    AppCompatImageView img_user;
+
     @BindView(R.id.btn_search)
     AppCompatButton btn_search;
 
@@ -34,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_setting)
     AppCompatButton btn_setting;
+
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
+    private List<User> userList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        getUserInfo();
+
 
     }
 
@@ -57,5 +77,29 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.home_container, new TestLoginFragment());
         transaction.commit();*/
         startActivity(new Intent(getApplicationContext(), Server.class));
+    }
+
+    public void getUserInfo() {
+        class GetInfo extends AsyncTask<Void, Void, List<User>> {
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                userList = DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().userDao().getUsers();
+                return userList;
+            }
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+
+                User user = users.get(0);
+                Uri mUri = Uri.parse(user.getPath());
+                img_user.setImageURI(mUri);
+                System.out.println("getPath===" + user.getPath());
+                System.out.println("getPath===" + user.getNameFamily());
+            }
+        }
+
+        new GetInfo().execute();
     }
 }

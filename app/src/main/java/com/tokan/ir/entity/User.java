@@ -1,5 +1,7 @@
 package com.tokan.ir.entity;
 
+import android.net.Uri;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -33,6 +35,7 @@ public class User implements Serializable {
     private String path;
     @ColumnInfo(name = "loginIs")
     private boolean loginIs;
+
 
     public int getId() {
         return id;
@@ -129,4 +132,5 @@ public class User implements Serializable {
     public void setLoginIs(boolean loginIs) {
         this.loginIs = loginIs;
     }
+
 }
