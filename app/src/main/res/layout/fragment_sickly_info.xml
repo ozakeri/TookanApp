@@ -12,30 +12,78 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar_layout"/>
-
         <com.tokan.ir.widget.BEditTextView
             android:id="@+id/edt_nationalCode"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
-            android:layout_margin="@dimen/margin_edittext"
-            android:layout_below="@+id/toolbar"/>
+            android:layout_margin="@dimen/margin_edittext" />
 
         <com.tokan.ir.widget.BEditTextView
             android:id="@+id/edt_nameFamily"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
             android:layout_margin="@dimen/margin_edittext"
-            android:layout_below="@+id/edt_nationalCode"/>
+            android:layout_below="@+id/edt_nationalCode" />
 
-        <com.tokan.ir.widget.BEditTextView
+
+
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/edt_birthDate"
             android:layout_width="match_parent"
             android:layout_height="@dimen/height"
             android:layout_margin="@dimen/margin_edittext"
-            android:layout_below="@+id/edt_nameFamily"/>
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_below="@+id/edt_nameFamily"
+            android:background="@drawable/border_edittext"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="@dimen/margin_edittext"
+            android:background="@drawable/border_edittext"
+            android:layout_below="@+id/edt_birthDate">
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+                android:layout_centerVertical="true">
+
+                <RadioButton
+                    android:id="@+id/man"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginRight="50dp"
+                    android:text="آقا"/>
+
+                <RadioButton
+                    android:id="@+id/woman"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="خانم"/>
+
+            </RadioGroup>
+
+        </RelativeLayout>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/edt_testDate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_margin="@dimen/margin_edittext"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_below="@+id/relativeLayout"
+            android:background="@drawable/border_edittext"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_action"

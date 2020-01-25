@@ -108,7 +108,7 @@ public class WelcomeActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(current);
                 } else {
                     current = getItem(+1);
-                    viewPager.setCurrentItem(current);
+                    viewPager.setCurrentItem(current-1);
                 }
             }
         });
@@ -116,8 +116,9 @@ public class WelcomeActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getUserList();
-                //startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                //getUserList();
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
+                finish();
             }
         });
 
@@ -148,14 +149,18 @@ public class WelcomeActivity extends AppCompatActivity {
             // changing the next button text 'NEXT' / 'GOT IT'
             if (position == layouts.length - 1) {
                 // last page. make button text to GOT IT
-                btnNext.setText("قبلی");
-                btn_back.setVisibility(View.GONE);
+                //btnNext.setText("قبلی");
+                //btn_back.setVisibility(View.GONE);
+                btnNext.setVisibility(View.GONE);
                 btnStart.setVisibility(View.VISIBLE);
                 btn_backup.setVisibility(View.VISIBLE);
             } else {
                 // still pages are left
+                btnNext.setVisibility(View.VISIBLE);
                 btnNext.setText("بعدی");
-                btn_back.setVisibility(View.VISIBLE);
+               // btn_back.setVisibility(View.VISIBLE);
+                btnStart.setVisibility(View.GONE);
+                btn_backup.setVisibility(View.GONE);
             }
         }
 
@@ -230,7 +235,7 @@ public class WelcomeActivity extends AppCompatActivity {
         return viewPager.getCurrentItem() + i;
     }
 
-    public void getUserList() {
+    /*public void getUserList() {
         class GetUserList extends AsyncTask<Void, Void, List<User>> {
 
             @Override
@@ -255,6 +260,6 @@ public class WelcomeActivity extends AppCompatActivity {
         }
 
         new GetUserList().execute();
-    }
+    }*/
 
 }

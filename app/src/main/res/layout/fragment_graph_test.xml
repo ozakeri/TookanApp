@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.GraphTestFragment">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id = "@+id/graphView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin = "5dp">
+                </com.jjoe64.graphview.GraphView>
+
+                <com.jjoe64.graphview.GraphView
+                    android:id = "@+id/graphView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin = "5dp"
+                    android:layout_below = "@+id/graphView1">
+                </com.jjoe64.graphview.GraphView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_action"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height"
+                    android:layout_margin="20dp"
+                    android:background="@drawable/border_button"
+                    android:textColor="@android:color/white"
+                    android:layout_alignParentBottom="true"
+                    android:text="ثبت نام و شروع" />
+
+            </RelativeLayout>
+
+</FrameLayout>

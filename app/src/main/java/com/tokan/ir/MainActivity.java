@@ -1,7 +1,7 @@
 package com.tokan.ir;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -11,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.User;
+import com.tokan.ir.fragment.SicklyInfoFragment;
+import com.tokan.ir.widget.BTextView;
 import com.tokan.ir.widget.drawer.DrawerList;
 
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_test)
     AppCompatButton btn_test;
 
+    @BindView(R.id.txt_username)
+    BTextView txt_username;
+
     @BindView(R.id.img_user)
     AppCompatImageView img_user;
 
@@ -44,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.btn_setting)
     AppCompatButton btn_setting;
-
-    @BindView(R.id.recyclerView)
-    RecyclerView recyclerView;
 
     private List<User> userList = new ArrayList<>();
 
@@ -64,22 +66,33 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-
-        getUserInfo();
+        getUserList();
 
 
     }
 
-    public void action(View view) {
-        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.home_container, new TestLoginFragment());
-        transaction.commit();*/
-        startActivity(new Intent(getApplicationContext(), Server.class));
+    public void test(View view) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home_container, new SicklyInfoFragment());
+        transaction.commit();
+        //startActivity(new Intent(getApplicationContext(), Server.class));
     }
 
-    public void getUserInfo() {
+    public void search(View view) {
+
+    }
+
+    public void report(View view) {
+
+    }
+
+
+    public void setting(View view) {
+
+    }
+
+
+    public void getUserList() {
         class GetInfo extends AsyncTask<Void, Void, List<User>> {
 
             @Override
@@ -93,13 +106,32 @@ public class MainActivity extends AppCompatActivity {
                 super.onPostExecute(users);
 
                 User user = users.get(0);
-                Uri mUri = Uri.parse(user.getPath());
-                img_user.setImageURI(mUri);
-                System.out.println("getPath===" + user.getPath());
-                System.out.println("getPath===" + user.getNameFamily());
+                Bitmap bitmap = resizeBitmap(user.getPath(), 200, 200);
+                img_user.setImageBitmap(bitmap);
+                txt_username.setText(user.getNameFamily());
             }
         }
 
         new GetInfo().execute();
+    }
+
+
+    private Bitmap resizeBitmap(String photoPath, int targetW, int targetH) {
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(photoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        int scaleFactor = 1;
+        if ((targetW > 0) || (targetH > 0)) {
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+        }
+
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true; //Deprecated API 21
+
+        return BitmapFactory.decodeFile(photoPath, bmOptions);
     }
 }

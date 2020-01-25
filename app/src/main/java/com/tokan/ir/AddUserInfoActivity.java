@@ -14,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -29,11 +30,6 @@ import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.User;
 import com.tokan.ir.widget.BEditTextView;
 import com.tokan.ir.widget.BTextView;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -100,6 +96,11 @@ public class AddUserInfoActivity extends AppCompatActivity {
 
         //edt_address.setMax(1000);
         edt_address.setLines(5);
+        edt_phoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edt_mobileNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
+        edt_email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        edt_confirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
 
     }
@@ -157,6 +158,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         });
     }
 
+
     public void addUser() {
 
         edt_nameFamily.setHint("نام و نانوادگی");
@@ -181,6 +183,57 @@ public class AddUserInfoActivity extends AppCompatActivity {
         String password = edt_password.getText().toString();
         String confirmPassword = edt_confirmPassword.getText().toString();
 
+        if (nameFamily.equals("")) {
+            edt_nameFamily.setError("تکمیل شود");
+            return;
+        }
+
+        if (title.equals("")) {
+            edt_title.setError("تکمیل شود");
+            return;
+        }
+
+        if (phoneNumber.equals("")) {
+            edt_phoneNumber.setError("تکمیل شود");
+            return;
+        }
+
+        if (mobileNumber.equals("")) {
+            edt_mobileNumber.setError("تکمیل شود");
+            return;
+        }
+
+        if (address.equals("")) {
+            edt_address.setError("تکمیل شود");
+            return;
+        }
+
+        if (email.equals("")) {
+            edt_email.setError("تکمیل شود");
+            return;
+        }
+
+        if (site.equals("")) {
+            edt_site.setError("تکمیل شود");
+            return;
+        }
+
+        if (username.equals("")) {
+            edt_username.setError("تکمیل شود");
+            return;
+        }
+
+        if (password.equals("")) {
+            edt_password.setError("تکمیل شود");
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            edt_password.setError("صحیح نمی باشد");
+            edt_confirmPassword.setError("صحیح نمی باشد");
+            return;
+        }
+
 
         class SaveUser extends AsyncTask<Void, Void, Void> {
 
@@ -198,7 +251,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 user.setMobileNumber(mobileNumber);
                 user.setSite(site);
                 user.setLoginIs(true);
-                user.setPath(outputFileUri.toString());
+                user.setPath(path);
 
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase().userDao().insertUser(user);
                 return null;
@@ -231,7 +284,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void galleryIntent() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false);
         startActivityForResult(Intent.createChooser(galleryIntent, "Select image"), REQUEST_GALLERY);
     }
@@ -242,39 +295,21 @@ public class AddUserInfoActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             path = null;
             if (requestCode == REQUEST_CAMERA) {
-                //data.getData return the content URI for the selected Image
-                Uri selectedImage = data.getData();
-                String[] filePathColumn = { MediaStore.Images.Media.DATA };
-                // Get the cursor
-                Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                // Move to first row
-                cursor.moveToFirst();
-                //Get the column index of MediaStore.Images.Media.DATA
-                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                //Gets the String value in the column
-                String imgDecodableString = cursor.getString(columnIndex);
-                cursor.close();
-                // Set the Image in ImageView after decoding the String
-                img_user.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
+                path = getPathCamera();
+                Bitmap bitmap = resizeBitmap(path, 100, 100);
+                img_user.setImageBitmap(bitmap);
 
             } else if (requestCode == REQUEST_GALLERY) {
                 outputFileUri = data.getData();
                 img_user.setImageURI(outputFileUri);
+                path = getRealPathFromURI(outputFileUri);
+                Bitmap bitmap = resizeBitmap(path, 150, 150);
+                img_user.setImageBitmap(bitmap);
 
             }
         }
     }
 
-    private boolean isFileValidImage(File file) {
-        String[] okFileExtensions = new String[]{"jpg", "png", "gif", "jpeg"};
-
-        for (String extension : okFileExtensions) {
-            if (file.getName().toLowerCase().endsWith(extension)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private Bitmap resizeBitmap(String photoPath, int targetW, int targetH) {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
