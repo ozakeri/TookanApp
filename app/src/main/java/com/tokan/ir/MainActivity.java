@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout_drawer;
 
     @BindView(R.id.btn_test)
-    AppCompatButton btn_test;
+    CardView btn_test;
 
     @BindView(R.id.txt_username)
     BTextView txt_username;
@@ -42,13 +43,13 @@ public class MainActivity extends AppCompatActivity {
     AppCompatImageView img_user;
 
     @BindView(R.id.btn_search)
-    AppCompatButton btn_search;
+    CardView btn_search;
 
     @BindView(R.id.btn_report)
-    AppCompatButton btn_report;
+    CardView btn_report;
 
     @BindView(R.id.btn_setting)
-    AppCompatButton btn_setting;
+    CardView btn_setting;
 
     private List<User> userList = new ArrayList<>();
 
