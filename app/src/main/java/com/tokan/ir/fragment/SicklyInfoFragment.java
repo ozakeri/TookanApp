@@ -186,6 +186,7 @@ public class SicklyInfoFragment extends Fragment {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.home_container, fragment);
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });

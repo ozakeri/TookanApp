@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
@@ -39,9 +40,10 @@ public class GraphTestFragment extends Fragment {
     private String birthDate;
     private String testDate;
     private String sex;
-    private List<Double> doubles = new ArrayList<>();
     private AppCompatButton btn_action;
     private List<Customer> customers = new ArrayList<>();
+    private List<Double> doubleList = new ArrayList<>();
+    private String json_str = null;
 
     public GraphTestFragment() {
         // Required empty public constructor
@@ -101,7 +103,7 @@ public class GraphTestFragment extends Fragment {
             public void run() {
                 graph2LastXValue += 1d;
                 System.out.println("getRandom====" + getRandom());
-                doubles.add(getRandom());
+                doubleList.add(getRandom());
                 mSeries2.appendData(new DataPoint(graph2LastXValue, getRandom()), true, 3000);
                 mHandler.postDelayed(this, 200);
             }
@@ -128,13 +130,18 @@ public class GraphTestFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... voids) {
+
+                Gson gson = new Gson();
+                String json = gson.toJson(doubleList);
+
+
                 Customer customer = new Customer();
                 customer.setNationalCode(nationalCode);
                 customer.setNameFamily(name);
                 customer.setBirthDate(birthDate);
                 customer.setTestDate(testDate);
                 customer.setSex(sex);
-                customer.setDoubleList(getRandom());
+                customer.setJsonValue(json);
                 DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().insertCustomer(customer);
                 return null;
             }
@@ -168,11 +175,16 @@ public class GraphTestFragment extends Fragment {
                     System.out.println("++++++++" + customer.getBirthDate());
                     System.out.println("++++++++" + customer.getTestDate());
                     System.out.println("++++++++" + customer.getSex());
+                    System.out.println("++++++++" + customer.getJsonValue());
                 }
 
             }
         }
 
         new GetInfo().execute();
+    }
+
+    public void saveValue() {
+
     }
 }

@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (users.size() != 0) {
                     User user = users.get(0);
                     if (user.isLoginIs()) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                     }
                 } else {
                     startActivity(new Intent(getApplicationContext(), WelcomeActivity.class));

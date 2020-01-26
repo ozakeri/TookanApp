@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".LoginFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_margin="20dp"
+          android:layout_centerVertical="true">
+
+          <com.tokan.ir.widget.BEditTextView
+              android:id="@+id/edt_username"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="20dp"/>
+
+          <com.tokan.ir.widget.BEditTextView
+              android:id="@+id/edt_password"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_margin="20dp"/>
+
+      </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ben_action"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/border_button"
+            android:text="ورود به سیستم"
+            android:textColor="@android:color/white" />
+
+
+    </RelativeLayout>
+
+</FrameLayout>

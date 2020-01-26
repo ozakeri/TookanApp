@@ -28,14 +28,10 @@ public class Customer implements Serializable {
     @ColumnInfo(name = "testDate")
     private String testDate;
 
-    @ColumnInfo(name = "longList")
-    private double doubleList;
+    @ColumnInfo(name = "jsonValue")
+    private String jsonValue;
 
     public Customer() {
-    }
-
-    public Customer(double doubleList) {
-        this.doubleList = doubleList;
     }
 
     public int getId() {
@@ -86,11 +82,11 @@ public class Customer implements Serializable {
         this.testDate = testDate;
     }
 
-    public double getDoubleList() {
-        return doubleList;
+    public String getJsonValue() {
+        return jsonValue;
     }
 
-    public void setDoubleList(double doubleList) {
-        this.doubleList = doubleList;
+    public void setJsonValue(String jsonValue) {
+        this.jsonValue = jsonValue;
     }
 }

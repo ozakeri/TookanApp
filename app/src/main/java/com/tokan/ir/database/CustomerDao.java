@@ -19,6 +19,9 @@ public interface CustomerDao {
     @Query("SELECT * FROM customer")
     List<Customer> getCustomers();
 
+    @Query("SELECT * FROM customer WHERE nameFamily LIKE :s")
+    List<Customer> getCustomersByKeyword(String s);
+
     @Insert(onConflict = REPLACE)
     void insertCustomer(Customer customer);
 

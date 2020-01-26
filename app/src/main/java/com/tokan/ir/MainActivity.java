@@ -12,12 +12,18 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.tokan.ir.callback.OnBackPressedListener;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.User;
+import com.tokan.ir.fragment.ReportFragment;
+import com.tokan.ir.fragment.SearchFragment;
+import com.tokan.ir.fragment.SettingFragment;
 import com.tokan.ir.fragment.SicklyInfoFragment;
+import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.widget.BTextView;
 import com.tokan.ir.widget.drawer.DrawerList;
 
@@ -73,23 +79,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test(View view) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_container, new SicklyInfoFragment());
         transaction.commit();
+        FragmentUtil.printActivityFragmentList(fragmentManager);
         //startActivity(new Intent(getApplicationContext(), Server.class));
     }
 
     public void search(View view) {
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home_container, new SearchFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void report(View view) {
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home_container, new ReportFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 
     public void setting(View view) {
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.home_container, new SettingFragment());
+        transaction.commit();
+        FragmentUtil.printActivityFragmentList(fragmentManager);
+
+        /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.home_container, new SettingFragment());
+        transaction.addToBackStack(null);
+        transaction.commit();*/
     }
 
 
@@ -134,5 +158,19 @@ public class MainActivity extends AppCompatActivity {
         bmOptions.inPurgeable = true; //Deprecated API 21
 
         return BitmapFactory.decodeFile(photoPath, bmOptions);
+    }
+
+    protected OnBackPressedListener onBackPressedListener;
+
+    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (onBackPressedListener != null) {
+            onBackPressedListener.doBack();
+        }
     }
 }
