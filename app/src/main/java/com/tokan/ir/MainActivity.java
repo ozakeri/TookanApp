@@ -83,7 +83,8 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_container, new SicklyInfoFragment());
         transaction.commit();
-        FragmentUtil.printActivityFragmentList(fragmentManager);
+
+        //FragmentUtil.printActivityFragmentList(fragmentManager);
         //startActivity(new Intent(getApplicationContext(), Server.class));
     }
 
@@ -107,8 +108,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_container, new SettingFragment());
+        transaction.addToBackStack(null);
         transaction.commit();
-        FragmentUtil.printActivityFragmentList(fragmentManager);
+        //FragmentUtil.printActivityFragmentList(fragmentManager);
 
         /*FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.home_container, new SettingFragment());

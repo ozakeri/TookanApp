@@ -12,24 +12,24 @@ public class FragmentUtil {
     public final static String TAG_NAME_FRAGMENT = "ACTIVITY_FRAGMENT";
 
     // Get exist Fragment by it's tag name.
-    public static Fragment getFragmentByTagName(FragmentManager fragmentManager, String fragmentTagName)
-    {
+    public static Fragment getFragmentByTagName(FragmentManager fragmentManager, String fragmentTagName) {
         Fragment ret = null;
 
         // Get all Fragment list.
         List<Fragment> fragmentList = fragmentManager.getFragments();
 
         int size = fragmentList.size();
-        for(int i=0;i<size;i++)
-        {
+        for (int i = 0; i < size; i++) {
             Fragment fragment = fragmentList.get(i);
 
-            if(fragment!=null) {
+            if (fragment != null) {
                 String fragmentTag = fragment.getTag();
 
                 // If Fragment tag name is equal then return it.
-                if (fragmentTag.equals(fragmentTagName)) {
-                    ret = fragment;
+                if (fragmentTag != null) {
+                    if (fragmentTag.equals(fragmentTagName)) {
+                        ret = fragment;
+                    }
                 }
             }
         }
@@ -38,21 +38,18 @@ public class FragmentUtil {
     }
 
     // Print fragment manager managed fragment in debug log.
-    public static void printActivityFragmentList(FragmentManager fragmentManager)
-    {
+    public static void printActivityFragmentList(FragmentManager fragmentManager) {
         // Get all Fragment list.
         List<Fragment> fragmentList = fragmentManager.getFragments();
 
-        if(fragmentList!=null)
-        {
+        if (fragmentList != null) {
             int size = fragmentList.size();
-            for(int i=0;i<size;i++)
-            {
+            for (int i = 0; i < size; i++) {
                 Fragment fragment = fragmentList.get(i);
 
-                if(fragment!=null) {
+                if (fragment != null) {
                     String fragmentTag = fragment.getTag();
-                    Log.d(TAG_NAME_FRAGMENT, fragmentTag);
+                    //Log.d(TAG_NAME_FRAGMENT, fragmentTag);
                 }
             }
 
