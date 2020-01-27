@@ -1,8 +1,8 @@
 package com.tokan.ir.fragment;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +17,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.tokan.ir.R;
-import com.tokan.ir.entity.Customer;
 import com.tokan.ir.sundatepicker.DatePicker;
 import com.tokan.ir.sundatepicker.interfaces.DateSetListener;
+import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.utils.JalaliCalendarUtil;
 import com.tokan.ir.widget.BEditTextView;
 
@@ -70,6 +70,7 @@ public class SicklyInfoFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         edt_nationalCode.setHint("کد ملی");
+        edt_nationalCode.setInputType(InputType.TYPE_CLASS_NUMBER);
         edt_nameFamily.setHint("نام و نام خانوادگی بیمار");
         edt_birthDate.setHint("تاریخ تولد");
         edt_testDate.setHint("تاریخ و ساعت انجام تست");
@@ -182,15 +183,34 @@ public class SicklyInfoFragment extends Fragment {
                 bundle.putString("testDate", testDate);
                 bundle.putString("sex", sex);
 
-                GraphTestFragment fragment = new GraphTestFragment();
+                gotoFragment(new GraphTestFragment(), "GraphTestFragment", bundle );
+                /*GraphTestFragment fragment = new GraphTestFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragment.setArguments(bundle);
                 transaction.replace(R.id.home_container, fragment);
                 transaction.addToBackStack(null);
-                transaction.commit();
+                transaction.commit();*/
             }
         });
         return view;
+    }
+
+
+    private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
+        if (frg == null) {
+            frg = fragment;
+            frg.setArguments(bundle);
+        }
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.home_container, frg, fragmentName);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+        FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 
 }

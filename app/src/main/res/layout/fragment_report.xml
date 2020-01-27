@@ -10,105 +10,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card1"
+
+        <EditText
+            android:id="@+id/edt_search"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="10dp">
+            android:layout_margin="15dp"
+            android:background="@drawable/border_edittext"
+            android:hint="جستجو..."
+            android:paddingRight="15dp" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.tokan.ir.widget.BTextView
-                    android:id="@+id/txt_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp" />
-
-
-                <com.tokan.ir.widget.BTextView
-                    android:id="@+id/txt_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp" />
-
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card2"
-            android:layout_width="match_parent"
+        <com.tokan.ir.widget.BTextView
+            android:id="@+id/txt_result"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card1"
-            android:layout_margin="10dp">
+            android:layout_below="@+id/edt_search"
+            android:layout_marginLeft="30dp"
+            android:text="نتیجه جستجو..."
+            android:textColor="@color/them"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.jjoe64.graphview.GraphView
-                    android:id="@+id/graphView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_margin="5dp"/>
-
-                <com.jjoe64.graphview.GraphView
-                    android:id="@+id/graphView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    android:layout_below="@+id/graphView1"
-                    android:layout_margin="5dp"/>
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card3"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/card2"
-            android:layout_margin="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.tokan.ir.widget.BTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"/>
-
-                    <com.tokan.ir.widget.BTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text=":"
-                        android:layout_weight="0.5"/>
-
-                    <com.tokan.ir.widget.BTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"/>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
+            android:layout_height="match_parent"
+            android:layout_below="@+id/txt_result"
+            android:layout_marginTop="10dp" />
 
     </RelativeLayout>
 

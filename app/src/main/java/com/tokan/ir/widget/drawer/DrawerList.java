@@ -7,12 +7,19 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.R;
 import com.tokan.ir.application.TokanApplication;
+import com.tokan.ir.fragment.AboutFragment;
+import com.tokan.ir.fragment.ContactUsFragment;
+import com.tokan.ir.fragment.ReportFragment;
+import com.tokan.ir.fragment.SearchFragment;
+import com.tokan.ir.fragment.SettingFragment;
+import com.tokan.ir.fragment.SicklyInfoFragment;
 import com.tokan.ir.widget.RecyclerItemClickListener;
 
 import java.util.ArrayList;
@@ -65,27 +72,33 @@ public class DrawerList {
 
         switch (possition) {
             case 0:
-               // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new SicklyInfoFragment());
                 break;
 
             case 1:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new SearchFragment());
                 break;
 
             case 2:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new ReportFragment());
                 break;
 
             case 3:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new SettingFragment());
                 break;
 
             case 4:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new AboutFragment());
                 break;
 
             case 5:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
+                gotoFragment(new ContactUsFragment());
                 break;
 
             default:
@@ -113,5 +126,13 @@ public class DrawerList {
             fragmentTransaction.replace(home_container, fragment, fragment.getClass().getCanonicalName());
             fragmentTransaction.commit();
         }
+    }
+
+    private void gotoFragment(Fragment fragment) {
+        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.home_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

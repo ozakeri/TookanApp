@@ -73,50 +73,61 @@ public class SettingFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 switch (position) {
                     case 0:
-                        fragmentTransaction(new UserSettingFragment(), "UserSettingFragment");
+                        //fragmentTransaction(new UserSettingFragment(), "UserSettingFragment");
+                        gotoFragment(new UserSettingFragment(), "UserSettingFragment");
                         break;
 
                     case 1:
-                        fragmentTransaction(new DeviceSettingFragment(), "DeviceSettingFragment");
+                        //fragmentTransaction(new DeviceSettingFragment(), "DeviceSettingFragment");
+                        gotoFragment(new DeviceSettingFragment(), "DeviceSettingFragment");
                         break;
 
                     case 2:
-                        FragmentManager fragmentManager = getFragmentManager();
-                        Fragment fragment = FragmentUtil.getFragmentByTagName(fragmentManager, "ChangePasswordFragment");
-                        if (fragment == null) {
-                            fragment = new ChangePasswordFragment();
-                        }
-
-                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.home_container,fragment,"ChangePasswordFragment");
-                        fragmentTransaction.addToBackStack(null);
-
-                        fragmentTransaction.commit();
-
-                        FragmentUtil.printActivityFragmentList(fragmentManager);
+                        gotoFragment(new ChangePasswordFragment(), "ChangePasswordFragment");
 
                         break;
 
                     case 3:
-                        fragmentTransaction(new BackupManageFragment(), "BackupManageFragment");
+                        //fragmentTransaction(new BackupManageFragment(), "BackupManageFragment");
+                        gotoFragment(new BackupManageFragment(), "BackupManageFragment");
+
                         break;
 
                     case 4:
-                        fragmentTransaction(new BackupFragment(), "BackupFragment");
+                        // fragmentTransaction(new BackupFragment(), "BackupFragment");
+                        gotoFragment(new BackupFragment(), "BackupFragment");
                         break;
 
                     case 5:
-                        fragmentTransaction(new ReportErrorFragment(), "ReportErrorFragment");
+                        //fragmentTransaction(new ReportErrorFragment(), "ReportErrorFragment");
+                        gotoFragment(new ReportErrorFragment(), "ReportErrorFragment");
                         break;
 
                     case 6:
-                        fragmentTransaction(new GuideFragment(), "GuideFragment");
+                        //fragmentTransaction(new GuideFragment(), "GuideFragment");
+                        gotoFragment(new GuideFragment(), "GuideFragment");
                         break;
                 }
             }
         }));
 
         return view;
+    }
+
+    private void gotoFragment(Fragment fragment, String fragmentName) {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
+        if (frg == null) {
+            frg = fragment;
+        }
+
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.home_container, frg, fragmentName);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+        FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 
     public void fragmentTransaction(final Fragment fragment, final String subtitle) {

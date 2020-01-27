@@ -5,36 +5,45 @@
     android:layout_height="match_parent"
     tools:context=".fragment.GraphTestFragment">
 
-            <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graphView1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+                android:layout_height="200dp"
+                android:layout_margin="5dp"/>
 
-                <com.jjoe64.graphview.GraphView
-                    android:id = "@+id/graphView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin = "5dp">
-                </com.jjoe64.graphview.GraphView>
+            <com.jjoe64.graphview.GraphView
+                android:id="@+id/graphView2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/graphView1"
+                android:layout_margin="5dp"/>
 
-                <com.jjoe64.graphview.GraphView
-                    android:id = "@+id/graphView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin = "5dp"
-                    android:layout_below = "@+id/graphView1">
-                </com.jjoe64.graphview.GraphView>
+        </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_action"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height"
-                    android:layout_margin="20dp"
-                    android:background="@drawable/border_button"
-                    android:textColor="@android:color/white"
-                    android:layout_alignParentBottom="true"
-                    android:text="ثبت نام و شروع" />
 
-            </RelativeLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_action"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/border_button"
+            android:text="شروع تست"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
 
 </FrameLayout>

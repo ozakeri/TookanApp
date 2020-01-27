@@ -81,12 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                 super.onPostExecute(users);
 
                 User user = users.get(0);
-                System.out.println("-+-+-+-+-+-+" + user.getUsername());
-                System.out.println("-+-+-+-+-+-+" + user.getPassword());
-                System.out.println("-+-+-+-+-+-+" + userName);
-                System.out.println("-+-+-+-+-+-+" + Util.enToFa(password));
 
-                if (user.getUsername().equals(userName) && user.getPassword().equals(Util.enToFa(password))) {
+                if (user.getUsername().equals(userName) && user.getPassword().equals(Util.faToEn(password))) {
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                 } else {

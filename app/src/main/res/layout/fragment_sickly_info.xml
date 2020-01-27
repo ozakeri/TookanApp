@@ -93,7 +93,7 @@
             android:background="@drawable/border_button"
             android:textColor="@android:color/white"
             android:layout_alignParentBottom="true"
-            android:text="تست و اتصال به دستگاه" />
+            android:text="مرحله بعد" />
     </RelativeLayout>
 
 </FrameLayout>

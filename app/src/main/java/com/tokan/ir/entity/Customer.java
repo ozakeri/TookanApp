@@ -1,14 +1,17 @@
 package com.tokan.ir.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 @Entity
-public class Customer implements Serializable {
+public class Customer implements Parcelable, Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -28,11 +31,51 @@ public class Customer implements Serializable {
     @ColumnInfo(name = "testDate")
     private String testDate;
 
-    @ColumnInfo(name = "jsonValue")
-    private String jsonValue;
+    @ColumnInfo(name = "flowValue")
+    private String flowValue;
+
+    @ColumnInfo(name = "volumeValue")
+    private String volumeValue;
+
+    @ColumnInfo(name = "comment")
+    private String comment;
+
+    @ColumnInfo(name = "startTime")
+    private Date startTime;
+
+    @ColumnInfo(name = "endTime")
+    private Date endTime;
+
+    @ColumnInfo(name = "delayTime")
+    private Date delayTime;
+
 
     public Customer() {
     }
+
+    protected Customer(Parcel in) {
+        id = in.readInt();
+        nameFamily = in.readString();
+        nationalCode = in.readString();
+        birthDate = in.readString();
+        sex = in.readString();
+        testDate = in.readString();
+        flowValue = in.readString();
+        volumeValue = in.readString();
+        comment = in.readString();
+    }
+
+    public static final Creator<Customer> CREATOR = new Creator<Customer>() {
+        @Override
+        public Customer createFromParcel(Parcel in) {
+            return new Customer(in);
+        }
+
+        @Override
+        public Customer[] newArray(int size) {
+            return new Customer[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -82,11 +125,45 @@ public class Customer implements Serializable {
         this.testDate = testDate;
     }
 
-    public String getJsonValue() {
-        return jsonValue;
+    public String getFlowValue() {
+        return flowValue;
     }
 
-    public void setJsonValue(String jsonValue) {
-        this.jsonValue = jsonValue;
+    public void setFlowValue(String flowValue) {
+        this.flowValue = flowValue;
+    }
+
+    public String getVolumeValue() {
+        return volumeValue;
+    }
+
+    public void setVolumeValue(String volumeValue) {
+        this.volumeValue = volumeValue;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(nameFamily);
+        parcel.writeString(nationalCode);
+        parcel.writeString(birthDate);
+        parcel.writeString(sex);
+        parcel.writeString(testDate);
+        parcel.writeString(flowValue);
+        parcel.writeString(volumeValue);
+        parcel.writeString(comment);
     }
 }

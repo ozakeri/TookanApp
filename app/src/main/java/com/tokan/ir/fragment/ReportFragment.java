@@ -3,6 +3,7 @@ package com.tokan.ir.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,7 +21,9 @@ import com.tokan.ir.R;
 import com.tokan.ir.adapter.SearchListAdapter;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
+import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.widget.BTextView;
+import com.tokan.ir.widget.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +75,7 @@ public class ReportFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                getCustomerList("%" + charSequence.toString()+ "%");
+                getCustomerList("%" + charSequence.toString() + "%");
             }
 
             @Override
@@ -79,34 +84,19 @@ public class ReportFragment extends Fragment {
             }
         });
 
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Customer customer = customerList.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("customer", customer);
+                gotoFragment(new ReportDetailFragment(), "ReportDetailFragment",bundle);
+            }
+        }));
         return view;
     }
 
     public void getCustomerList(String s) {
-
-
-        /*class CustomerList extends AsyncTask<String, Void, List<Customer>> {
-
-            @Override
-            protected List<Customer> doInBackground(String... strings) {
-                System.out.println("sssssssssssss" + s);
-                customerList = DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().getCustomersByKeyword(strings[0]);
-                System.out.println("sssssssssssss" + customerList.size());
-                return customerList;
-            }
-
-            @Override
-            protected void onPostExecute(List<Customer> customers) {
-                super.onPostExecute(customers);
-                adapter = new SearchListAdapter(customers);
-                recyclerView.setAdapter(adapter);
-                txt_result.setText(" نتیجه جستجو " + customers.size() + " نفر ");
-                System.out.println("sssssssssssss+++" + customers.size());
-            }
-        }
-
-
-        new CustomerList().execute(s);*/
 
         class CustomerList extends AsyncTask<Void, Void, List<Customer>> {
 
@@ -130,7 +120,22 @@ public class ReportFragment extends Fragment {
         }
 
         new CustomerList().execute();
+    }
 
+    private void gotoFragment(Fragment fragment, String fragmentName,Bundle bundle) {
+        FragmentManager fragmentManager = getFragmentManager();
+        Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
+        if (frg == null) {
+            frg = fragment;
+            frg.setArguments(bundle);
+        }
 
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.home_container, frg, fragmentName);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
+
+        FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 }

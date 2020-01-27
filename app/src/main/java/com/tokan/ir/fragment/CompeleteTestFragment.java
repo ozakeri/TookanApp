@@ -1,10 +1,13 @@
 package com.tokan.ir.fragment;
 
 
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
@@ -14,7 +17,9 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.tokan.ir.R;
+import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
+import com.tokan.ir.widget.BEditTextView;
 import com.tokan.ir.widget.BTextView;
 
 import java.lang.reflect.Type;
@@ -27,13 +32,28 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ReportDetailFragment extends Fragment {
+public class CompeleteTestFragment extends Fragment {
 
     @BindView(R.id.txt_name)
     BTextView txt_name;
 
-    @BindView(R.id.txt_date)
-    BTextView txt_date;
+    @BindView(R.id.txt_customer)
+    BTextView txt_customer;
+
+    @BindView(R.id.txt_nationalCode)
+    BTextView txt_nationalCode;
+
+    @BindView(R.id.txt_nameFamily)
+    BTextView txt_nameFamily;
+
+    @BindView(R.id.txt_sex)
+    BTextView txt_sex;
+
+    @BindView(R.id.txt_birthDate)
+    BTextView txt_birthDate;
+
+    @BindView(R.id.txt_testDate)
+    BTextView txt_testDate;
 
     @BindView(R.id.txt_averageFlowRate)
     BTextView txt_averageFlowRate;
@@ -65,8 +85,11 @@ public class ReportDetailFragment extends Fragment {
     @BindView(R.id.graphView2)
     GraphView graphView2;
 
+    @BindView(R.id.btn_save)
+    Button btn_save;
+
     @BindView(R.id.txt_comment)
-    BTextView txt_comment;
+    BEditTextView txt_comment;
 
     private List<Double> doubleList = new ArrayList<>();
     private List<Double> doubleList1 = new ArrayList<>();
@@ -74,7 +97,7 @@ public class ReportDetailFragment extends Fragment {
     private LineGraphSeries<DataPoint> mSeries;
     private LineGraphSeries<DataPoint> mSeries1;
 
-    public ReportDetailFragment() {
+    public CompeleteTestFragment() {
         // Required empty public constructor
     }
 
@@ -82,8 +105,11 @@ public class ReportDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_detail_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_compelete_test, container, false);
+
 
         ButterKnife.bind(this, view);
 
@@ -111,9 +137,12 @@ public class ReportDetailFragment extends Fragment {
 
             if (customer != null) {
                 txt_name.setText(customer.getNameFamily());
-                txt_date.setText(customer.getTestDate());
-                txt_comment.setText(customer.getComment());
-                System.out.println("txt_comment====" + customer.getComment());
+                txt_customer.setText(customer.getTestDate());
+                txt_nameFamily.setText(customer.getNameFamily());
+                txt_nationalCode.setText(customer.getNationalCode());
+                txt_sex.setText(customer.getSex());
+                txt_birthDate.setText(customer.getBirthDate());
+                txt_testDate.setText(customer.getTestDate());
 
                 Gson gson = new Gson();
                 String json1 = customer.getFlowValue();
@@ -134,22 +163,40 @@ public class ReportDetailFragment extends Fragment {
                 graphView1.addSeries(mSeries);
                 graphView2.addSeries(mSeries1);
 
-                //*************************
-                double sum = 0;
-                for (double d : doubleList) {
-                    sum += d;
-                }
-                String avg = String.valueOf(sum / doubleList.size());
-                txt_averageFlowRate.setText(avg);
-                txt_maximumFlowRate.setText(String.valueOf(sum));
-                //*************************
+
+
+                btn_save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (txt_comment.getText() != null){
+                            customer.setComment(txt_comment.getText().toString());
+                        }
+                        saveData(customer);
+                    }
+                });
             }
 
-
         }
-
-
         return view;
+    }
+
+
+    public void saveData(Customer customer) {
+        class SaveData extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().insertCustomer(customer);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+
+            }
+        }
+        new SaveData().execute();
     }
 
 }
