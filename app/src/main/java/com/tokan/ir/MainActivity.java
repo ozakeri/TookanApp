@@ -4,11 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -19,19 +21,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tokan.ir.callback.OnBackPressedListener;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.User;
+import com.tokan.ir.fragment.AboutFragment;
+import com.tokan.ir.fragment.BackupFragment;
+import com.tokan.ir.fragment.BackupManageFragment;
+import com.tokan.ir.fragment.ChangePasswordFragment;
+import com.tokan.ir.fragment.CompeleteTestFragment;
+import com.tokan.ir.fragment.ContactUsFragment;
+import com.tokan.ir.fragment.DeviceSettingFragment;
+import com.tokan.ir.fragment.GraphTestFragment;
+import com.tokan.ir.fragment.GuideFragment;
+import com.tokan.ir.fragment.ReportDetailFragment;
 import com.tokan.ir.fragment.ReportErrorFragment;
 import com.tokan.ir.fragment.ReportFragment;
 import com.tokan.ir.fragment.SearchFragment;
 import com.tokan.ir.fragment.SettingFragment;
 import com.tokan.ir.fragment.SicklyInfoFragment;
+import com.tokan.ir.fragment.UserSettingFragment;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.widget.BTextView;
 import com.tokan.ir.widget.drawer.DrawerList;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     BTextView txt_username;
 
     @BindView(R.id.img_user)
-    AppCompatImageView img_user;
+    CircleImageView img_user;
 
     @BindView(R.id.btn_search)
     CardView btn_search;
@@ -57,7 +75,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.btn_setting)
     CardView btn_setting;
 
+    @BindView(R.id.txt_title)
+    BTextView txt_title;
+
+    @BindView(R.id.img_arrow)
+    ImageView img_arrow;
+
     private List<User> userList = new ArrayList<>();
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,30 +98,46 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        //txt_title.setVisibility(View.GONE);
+        img_arrow.setBackgroundResource(R.drawable.ic_slidemenu);
+
+
+        img_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                System.out.println("click=====");
+            }
+        });
+
+
         getUserList();
 
 
     }
 
     public void test(View view) {
-        gotoFragment(new SicklyInfoFragment());
+        gotoFragment(new SicklyInfoFragment(), "SicklyInfoFragment");
+
     }
 
     public void search(View view) {
-        gotoFragment(new SearchFragment());
+        gotoFragment(new SearchFragment(), "SearchFragment");
+
     }
 
     public void report(View view) {
-        gotoFragment(new ReportFragment());
+        gotoFragment(new ReportFragment(), "ReportFragment");
     }
 
 
     public void setting(View view) {
 
-        gotoFragment(new SettingFragment());
+        gotoFragment(new SettingFragment(), "SettingFragment");
     }
 
-    private void gotoFragment(Fragment fragment) {
+    private void gotoFragment(Fragment fragment, String name) {
+        EventBus.getDefault().post(new EventModel(name));
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_container, fragment);
@@ -156,11 +197,165 @@ public class MainActivity extends AppCompatActivity {
         this.onBackPressedListener = onBackPressedListener;
     }
 
+
+    private void closeDrawer() {
+        if (drawerLayout.isDrawerOpen(layout_drawer))
+            drawerLayout.closeDrawer(layout_drawer);
+        else
+            drawerLayout.openDrawer(layout_drawer);
+    }
+
+
+    @Subscribe
+    public void getFragmentName(EventModel model) {
+
+        getFragmentName(model.getFragmentNAme());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        if (onBackPressedListener != null) {
-            onBackPressedListener.doBack();
+
+
+        Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.home_container);
+        if (fragmentInFrame != null) {
+            super.onBackPressed();
+        }
+
+       /* if (fragmentInFrame instanceof SicklyInfoFragment) {
+            txt_title.setText("اطلاعات بیمار");
+        } else*/
+        if (fragmentInFrame instanceof SearchFragment) {
+            txt_title.setText("جستجو");
+        } else if (fragmentInFrame instanceof ReportFragment) {
+            txt_title.setText("گزارشات");
+        } else if (fragmentInFrame instanceof SettingFragment) {
+            txt_title.setText("تنظیمات");
+        } else if (fragmentInFrame instanceof GraphTestFragment) {
+            txt_title.setText("تست");
+        } else if (fragmentInFrame instanceof CompeleteTestFragment) {
+            txt_title.setText("اتمام تست");
+        } else if (fragmentInFrame instanceof ReportDetailFragment) {
+            txt_title.setText("جزییات گزارش");
+        } else if (fragmentInFrame instanceof UserSettingFragment) {
+            txt_title.setText("تنظیمات کاربری");
+        } else if (fragmentInFrame instanceof DeviceSettingFragment) {
+            txt_title.setText("تنظیمات دستگاه");
+        } else if (fragmentInFrame instanceof ChangePasswordFragment) {
+            txt_title.setText("تغییر رمز عبور");
+        } else if (fragmentInFrame instanceof BackupManageFragment) {
+            txt_title.setText("مدیریت پشتیبان ها");
+        } else if (fragmentInFrame instanceof BackupFragment) {
+            txt_title.setText("پشتیبان گیری");
+        } else if (fragmentInFrame instanceof ReportErrorFragment) {
+            txt_title.setText("گزارش خطا");
+        } else if (fragmentInFrame instanceof GuideFragment) {
+            txt_title.setText("راهنما");
+        } else if (fragmentInFrame instanceof AboutFragment) {
+            txt_title.setText("درباره ما");
+        } else if (fragmentInFrame instanceof ContactUsFragment) {
+            txt_title.setText("تماس باما");
+        } else {
+            txt_title.setText("");
+        }
+
+        if (fragmentInFrame == null) {
+            txt_title.setText("");
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+
+        }
+    }
+
+    public void getFragmentName(String name) {
+        switch (name) {
+            case "SicklyInfoFragment":
+                txt_title.setText("اطلاعات بیمار");
+                break;
+
+            case "SearchFragment":
+                txt_title.setText("جستجو");
+                break;
+
+            case "ReportFragment":
+                txt_title.setText("گزارشات");
+                break;
+
+            case "SettingFragment":
+                txt_title.setText("تنظیمات");
+                break;
+
+            case "GraphTestFragment":
+                txt_title.setText("تست");
+                break;
+
+            case "CompeleteTestFragment":
+                txt_title.setText("اتمام تست");
+                break;
+
+            case "ReportDetailFragment":
+                txt_title.setText("جزییات گزارش");
+                break;
+
+            case "UserSettingFragment":
+                txt_title.setText("تنظیمات کاربری");
+                break;
+
+            case "DeviceSettingFragment":
+                txt_title.setText("تنظیمات دستگاه");
+                break;
+
+            case "ChangePasswordFragment":
+                txt_title.setText("تغییر رمز عبور");
+                break;
+
+            case "BackupManageFragment":
+                txt_title.setText("مدیریت پشتیبان ها");
+                break;
+
+            case "BackupFragment":
+                txt_title.setText("پشتیبان گیری");
+                break;
+
+            case "ReportErrorFragment":
+                txt_title.setText("گزارش خطا");
+                break;
+
+            case "GuideFragment":
+                txt_title.setText("راهنما");
+                break;
+
+            case "AboutFragment":
+                txt_title.setText("درباره ما");
+                break;
+
+            case "ContactUsFragment":
+                txt_title.setText("تماس باما");
+                break;
+
         }
     }
 }

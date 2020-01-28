@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.R;
 import com.tokan.ir.application.TokanApplication;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.utils.RecyclerItemClickListener;
 import com.tokan.ir.widget.drawer.DrawerAdapter;
 import com.tokan.ir.widget.drawer.DrawerItem;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +118,7 @@ public class SettingFragment extends Fragment {
     }
 
     private void gotoFragment(Fragment fragment, String fragmentName) {
+        EventBus.getDefault().post(new EventModel(fragmentName));
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
         if (frg == null) {
@@ -130,22 +134,4 @@ public class SettingFragment extends Fragment {
         FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 
-    public void fragmentTransaction(final Fragment fragment, final String subtitle) {
-
-        TokanApplication.getInstance().resetBackCount();
-
-        if (fragment != null) {
-
-            Fragment current = (getActivity()).getSupportFragmentManager().findFragmentByTag(fragment.getClass().getCanonicalName());
-            if (current != null && current.isVisible())
-                return;
-
-            //mToolBar.setSubtitle(subtitle);
-            FragmentTransaction fragmentTransaction = (getActivity()).getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_left, R.anim.exit_to_right);
-            fragmentTransaction.replace(home_container, fragment, fragment.getClass().getCanonicalName());
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-    }
 }

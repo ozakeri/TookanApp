@@ -8,7 +8,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 public class Customer implements Parcelable, Serializable {
@@ -41,13 +40,13 @@ public class Customer implements Parcelable, Serializable {
     private String comment;
 
     @ColumnInfo(name = "startTime")
-    private Date startTime;
+    private String startTime;
 
     @ColumnInfo(name = "endTime")
-    private Date endTime;
+    private String endTime;
 
     @ColumnInfo(name = "delayTime")
-    private Date delayTime;
+    private String delayTime;
 
 
     public Customer() {
@@ -63,6 +62,9 @@ public class Customer implements Parcelable, Serializable {
         flowValue = in.readString();
         volumeValue = in.readString();
         comment = in.readString();
+        startTime = in.readString();
+        endTime = in.readString();
+        delayTime = in.readString();
     }
 
     public static final Creator<Customer> CREATOR = new Creator<Customer>() {
@@ -149,6 +151,30 @@ public class Customer implements Parcelable, Serializable {
         this.comment = comment;
     }
 
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getDelayTime() {
+        return delayTime;
+    }
+
+    public void setDelayTime(String delayTime) {
+        this.delayTime = delayTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -165,5 +191,8 @@ public class Customer implements Parcelable, Serializable {
         parcel.writeString(flowValue);
         parcel.writeString(volumeValue);
         parcel.writeString(comment);
+        parcel.writeString(startTime);
+        parcel.writeString(endTime);
+        parcel.writeString(delayTime);
     }
 }

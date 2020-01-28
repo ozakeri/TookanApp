@@ -20,7 +20,10 @@ import com.tokan.ir.fragment.ReportFragment;
 import com.tokan.ir.fragment.SearchFragment;
 import com.tokan.ir.fragment.SettingFragment;
 import com.tokan.ir.fragment.SicklyInfoFragment;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.widget.RecyclerItemClickListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +48,12 @@ public class DrawerList {
 
     public void addListDrawer() {
         dataList = new ArrayList<DrawerItem>();
-        dataList.add(new DrawerItem("شروع تست ", R.drawable.ic_launcher_background));
-        dataList.add(new DrawerItem("جستجوی بیماران", R.drawable.ic_launcher_background));
-        dataList.add(new DrawerItem("گزارشات", R.drawable.ic_launcher_background));
-        dataList.add(new DrawerItem("تنظیمات", R.drawable.ic_launcher_background));
-        dataList.add(new DrawerItem("درباره ما ", R.drawable.ic_launcher_background));
-        dataList.add(new DrawerItem("تماس با ما ", R.drawable.ic_launcher_background));
+        dataList.add(new DrawerItem("شروع تست ", R.drawable.icon_test));
+        dataList.add(new DrawerItem("جستجوی بیماران", R.drawable.icon_search));
+        dataList.add(new DrawerItem("گزارشات", R.drawable.icons_report));
+        dataList.add(new DrawerItem("تنظیمات", R.drawable.icon_setting));
+        dataList.add(new DrawerItem("درباره ما ", R.drawable.about_icon));
+        dataList.add(new DrawerItem("تماس با ما ", R.drawable.contact_icon));
 
 
         recyclerView.setHasFixedSize(true);
@@ -73,32 +76,32 @@ public class DrawerList {
         switch (possition) {
             case 0:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new SicklyInfoFragment());
+                gotoFragment(new SicklyInfoFragment(), "SicklyInfoFragment");
                 break;
 
             case 1:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new SearchFragment());
+                gotoFragment(new SearchFragment(), "SearchFragment");
                 break;
 
             case 2:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new ReportFragment());
+                gotoFragment(new ReportFragment(), "ReportFragment");
                 break;
 
             case 3:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new SettingFragment());
+                gotoFragment(new SettingFragment(), "SettingFragment");
                 break;
 
             case 4:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new AboutFragment());
+                gotoFragment(new AboutFragment(), "AboutFragment");
                 break;
 
             case 5:
                 // fragmentTransaction(new RecentServicesFragment(), context.getString(R.string.drawer_home));
-                gotoFragment(new ContactUsFragment());
+                gotoFragment(new ContactUsFragment(), "ContactUsFragment");
                 break;
 
             default:
@@ -128,7 +131,8 @@ public class DrawerList {
         }
     }
 
-    private void gotoFragment(Fragment fragment) {
+    private void gotoFragment(Fragment fragment, String name) {
+        EventBus.getDefault().post(new EventModel(name));
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.home_container, fragment);

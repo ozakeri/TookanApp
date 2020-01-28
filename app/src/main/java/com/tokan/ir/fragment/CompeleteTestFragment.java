@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
@@ -89,7 +90,7 @@ public class CompeleteTestFragment extends Fragment {
     Button btn_save;
 
     @BindView(R.id.txt_comment)
-    BEditTextView txt_comment;
+    EditText txt_comment;
 
     private List<Double> doubleList = new ArrayList<>();
     private List<Double> doubleList1 = new ArrayList<>();
@@ -164,14 +165,14 @@ public class CompeleteTestFragment extends Fragment {
                 graphView2.addSeries(mSeries1);
 
 
-
                 btn_save.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (txt_comment.getText() != null){
+                        if (txt_comment.getText() != null) {
                             customer.setComment(txt_comment.getText().toString());
                         }
                         saveData(customer);
+                        getActivity().finish();
                     }
                 });
             }

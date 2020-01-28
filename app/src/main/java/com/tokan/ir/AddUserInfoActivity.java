@@ -43,6 +43,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
     @BindView(R.id.img_user)
     AppCompatImageView img_user;
 
+    @BindView(R.id.img_arrow)
+    AppCompatImageView img_arrow;
+
     @BindView(R.id.edt_nameFamily)
     BEditTextView edt_nameFamily;
 
@@ -73,6 +76,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
     @BindView(R.id.edt_confirmPassword)
     BEditTextView edt_confirmPassword;
 
+    @BindView(R.id.txt_title)
+    BTextView txt_title;
+
     private Uri mCapturedImageURI;
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
@@ -97,6 +103,9 @@ public class AddUserInfoActivity extends AppCompatActivity {
         edt_username.setHint("نام کاربری");
         edt_password.setHint("رمز عبور");
         edt_confirmPassword.setHint("تکرار رمز عبور");
+        txt_title.setText("مشخصات مالک");
+        txt_title.setTextSize(24);
+        img_arrow.setVisibility(View.GONE);
 
         //edt_address.setMax(1000);
         edt_address.setLines(5);
@@ -105,6 +114,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
         edt_email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edt_confirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+        img_user.setBackgroundDrawable(getResources().getDrawable(R.drawable.click));
 
 
     }
@@ -303,12 +314,14 @@ public class AddUserInfoActivity extends AppCompatActivity {
             if (requestCode == REQUEST_CAMERA) {
                 path = getPathCamera();
                 Bitmap bitmap = resizeBitmap(path, 100, 100);
+                img_user.setBackgroundDrawable(null);
                 img_user.setImageBitmap(bitmap);
 
             } else if (requestCode == REQUEST_GALLERY) {
                 outputFileUri = data.getData();
-                path = getPathFromUri(getApplicationContext(),outputFileUri);
+                path = getPathFromUri(getApplicationContext(), outputFileUri);
                 Bitmap bitmap = resizeBitmap(path, 100, 100);
+                img_user.setBackgroundDrawable(null);
                 img_user.setImageBitmap(bitmap);
 
             }
@@ -406,7 +419,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
                 }
 
                 final String selection = "_id=?";
-                final String[] selectionArgs = new String[] {
+                final String[] selectionArgs = new String[]{
                         split[1]
                 };
 

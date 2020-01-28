@@ -17,11 +17,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.tokan.ir.R;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.sundatepicker.DatePicker;
 import com.tokan.ir.sundatepicker.interfaces.DateSetListener;
 import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.utils.JalaliCalendarUtil;
 import com.tokan.ir.widget.BEditTextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Calendar;
 
@@ -197,6 +200,8 @@ public class SicklyInfoFragment extends Fragment {
 
 
     private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
+        EventBus.getDefault().post(new EventModel(fragmentName));
+
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
         if (frg == null) {

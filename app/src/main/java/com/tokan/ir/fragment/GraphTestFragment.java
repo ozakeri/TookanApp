@@ -24,7 +24,10 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.tokan.ir.R;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.utils.FragmentUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -266,6 +269,7 @@ public class GraphTestFragment extends Fragment {
     }
 
     private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
+        EventBus.getDefault().post(new EventModel(fragmentName));
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
         if (frg == null) {

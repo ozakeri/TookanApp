@@ -21,9 +21,12 @@ import com.tokan.ir.R;
 import com.tokan.ir.adapter.SearchListAdapter;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.widget.BTextView;
 import com.tokan.ir.widget.RecyclerItemClickListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,6 +126,8 @@ public class ReportFragment extends Fragment {
     }
 
     private void gotoFragment(Fragment fragment, String fragmentName,Bundle bundle) {
+
+        EventBus.getDefault().post(new EventModel("fragmentName"));
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
         if (frg == null) {

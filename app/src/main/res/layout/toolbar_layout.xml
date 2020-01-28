@@ -13,26 +13,32 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/height">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/img_arrow"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
-            android:background="@mipmap/ic_launcher" />
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
 
-        <com.tokan.ir.widget.BTextView
-            android:id="@+id/txt_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_toLeftOf="@+id/img_arrow"
-            android:text="toolbar"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_arrow"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:background="@mipmap/ic_launcher"
+                android:layout_centerVertical="true"/>
 
+            <com.tokan.ir.widget.BTextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/img_arrow"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
+        </RelativeLayout>
     </RelativeLayout>
 
 </androidx.appcompat.widget.Toolbar>

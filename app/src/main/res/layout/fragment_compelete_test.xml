@@ -459,10 +459,11 @@
 
                     </LinearLayout>
 
-                    <com.tokan.ir.widget.BEditTextView
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/txt_comment"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"/>
+                        android:background="@drawable/border_edittext"
+                        android:layout_height="300dp"/>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btn_save"
