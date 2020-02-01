@@ -148,19 +148,6 @@ public class GraphTestFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        /*((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(MainActivity.ARG_SECTION_NUMBER));*/
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-
-    }
 
     @Override
     public void onPause() {
@@ -197,76 +184,12 @@ public class GraphTestFragment extends Fragment {
         customer.setSex(sex);
         customer.setFlowValue(json1);
         customer.setVolumeValue(json2);
-        //DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().insertCustomer(customer);
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("customer", customer);
         gotoFragment(new CompeleteTestFragment(),"CompeleteTestFragment",bundle);
-
-
-       /* class SaveData extends AsyncTask<Void, Void, Void> {
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Gson gson1 = new Gson();
-                Gson gson2 = new Gson();
-                String json1 = gson1.toJson(doubleListX1);
-                String json2 = gson2.toJson(doubleListX2);
-
-
-                Customer customer = new Customer();
-                customer.setNationalCode(nationalCode);
-                customer.setNameFamily(name);
-                customer.setBirthDate(birthDate);
-                customer.setTestDate(testDate);
-                customer.setSex(sex);
-                customer.setFlowValue(json1);
-                customer.setVolumeValue(json2);
-                //DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().insertCustomer(customer);
-
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("customer", customer);
-                gotoFragment(new CompeleteTestFragment(),"CompeleteTestFragment",bundle);
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-            }
-        }
-        new SaveData().execute();*/
     }
 
-
-    public void getUserInfo() {
-        class GetInfo extends AsyncTask<Void, Void, List<Customer>> {
-
-            @Override
-            protected List<Customer> doInBackground(Void... voids) {
-                customers = DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().getCustomers();
-                return customers;
-            }
-
-            @Override
-            protected void onPostExecute(List<Customer> users) {
-                super.onPostExecute(users);
-
-                for (Customer customer : users) {
-
-                }
-
-            }
-        }
-
-        new GetInfo().execute();
-    }
-
-    public void saveValue() {
-
-    }
 
     private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
         EventBus.getDefault().post(new EventModel(fragmentName));

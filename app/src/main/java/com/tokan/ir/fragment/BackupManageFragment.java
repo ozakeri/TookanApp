@@ -71,7 +71,7 @@ public class BackupManageFragment extends Fragment {
 
         getBackupList();
 
-        recycler_view.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+     /*   recycler_view.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
 
@@ -80,7 +80,7 @@ public class BackupManageFragment extends Fragment {
                     restoreDb(backup.getBackupPath());
                 }
             }
-        }));
+        }));*/
 
         return view;
     }
@@ -101,7 +101,7 @@ public class BackupManageFragment extends Fragment {
                 super.onPostExecute(backupList);
 
                 if (backupList != null) {
-                    recycler_view.setAdapter(new BackupListAdapter(backupList));
+                    recycler_view.setAdapter(new BackupListAdapter(getActivity(),backupList));
                 }
             }
         }
@@ -112,7 +112,6 @@ public class BackupManageFragment extends Fragment {
     private boolean restoreDb( String databaseName) {
         File exportFile = DATA_DIRECTORY_DATABASE;
         File importFile = new File(DATABASE_DIRECTORY, databaseName);
-        ;
         try {
             exportFile.createNewFile();
             copyFile(importFile, exportFile);

@@ -2,6 +2,7 @@ package com.tokan.ir.fragment;
 
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -56,6 +57,8 @@ public class SettingFragment extends Fragment {
 
     public static final String PACKAGE_NAME = "com.tokan.ir";
     public static final String DATABASE_NAME = "MyDatabase.db";
+
+    private ProgressDialog progress;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -181,7 +184,7 @@ public class SettingFragment extends Fragment {
         try {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
-            System.out.println("=-=-=-=-=-+++++++++++");
+
             if (sd.canWrite()) {
                 //String currentDbPath = "//data//com.bluapp.androidview//databases//UserDb";
                 String currentDbPath = "//data/com.tokan.ir/databases/MyDatabase";
@@ -193,9 +196,7 @@ public class SettingFragment extends Fragment {
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
-                Toast.makeText(getActivity(), "Backup successfully", Toast.LENGTH_LONG).show();
-                saveBackup(backupPath,currentDbPath,DATABASE_NAME,PACKAGE_NAME);
-                System.out.println("=-=-=-=-=-+++++++++++1212121");
+                saveBackup(backupPath, currentDbPath, DATABASE_NAME, PACKAGE_NAME);
             }
 
         } catch (Exception e) {
@@ -205,23 +206,47 @@ public class SettingFragment extends Fragment {
 
 
     public void saveBackup(String backupPath, String currentDbPath, String databaseName, String packageName) {
+
+        progress = new ProgressDialog(getActivity());
+        progress.setMessage("Loading..."); // Setting Message
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
+        progress.show(); // Display Progress Dialog
+        progress.setCancelable(false);
+
         class BackupList extends AsyncTask<Void, Void, Void> {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                Backup backup = new Backup();
 
+                Backup backup = new Backup();
                 backup.setBackupPath(backupPath);
                 backup.setCurrentDbPath(currentDbPath);
                 backup.setDatabaseName(databaseName);
                 backup.setPackageName(packageName);
-                DatabaseClient.getInstance(getActivity()).getAppDatabase().backupDao().insertBackup(backup);
+
+                try {
+                    new Thread(new Runnable() {
+                        public void run() {
+                            try {
+                                Thread.sleep(5000);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            progress.dismiss();
+                            DatabaseClient.getInstance(getActivity()).getAppDatabase().backupDao().insertBackup(backup);
+                        }
+                    }).start();
+                } catch (Exception e) {
+                    e.getMessage();
+                }
+
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
+                Toast.makeText(getActivity(), "با موفقیت انجام شد", Toast.LENGTH_LONG).show();
             }
         }
 

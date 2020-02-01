@@ -67,12 +67,12 @@ public class BackupFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_backup, container, false);
         ButterKnife.bind(this, view);
 
-        view.findViewById(R.id.btn_Yes).setOnClickListener(new View.OnClickListener() {
+      /*  view.findViewById(R.id.btn_Yes).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 backup();
             }
-        });
+        });*/
 
        /* btn_restore.setOnClickListener(new View.OnClickListener() {
             @Override

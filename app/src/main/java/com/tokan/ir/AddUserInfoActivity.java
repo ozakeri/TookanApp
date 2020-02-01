@@ -84,7 +84,6 @@ public class AddUserInfoActivity extends AppCompatActivity {
     private static final int REQUEST_GALLERY = 2;
     private static final int MY_PERMISSIONS_REQUEST = 100;
     private String path;
-    private Uri outputFileUri;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,6 +111,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
         edt_phoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
         edt_mobileNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
         edt_email.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        edt_site.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
         edt_confirmPassword.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
@@ -167,7 +167,30 @@ public class AddUserInfoActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
             @Override
             public void onClick(View view) {
-                galleryIntent();
+
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
+                        .checkSelfPermission(getApplicationContext(),
+                                Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale
+                            (AddUserInfoActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                            ActivityCompat.shouldShowRequestPermissionRationale
+                                    (AddUserInfoActivity.this, Manifest.permission.CAMERA)) {
+                        finish();
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(
+                                    new String[]{Manifest.permission
+                                            .WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                                    MY_PERMISSIONS_REQUEST);
+                        }
+                    }
+
+                } else {
+                    galleryIntent();
+                }
+
                 dialog.dismiss();
             }
         });
@@ -275,7 +298,7 @@ public class AddUserInfoActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                startActivity(new Intent(getApplicationContext(), CheckDeviceActivity.class));
+                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
                 Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
             }
         }

@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                System.out.println("click=====");
+                closeDrawer();
             }
         });
 
@@ -226,49 +226,51 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        super.onBackPressed();
 
         Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.home_container);
-        if (fragmentInFrame != null) {
+        /*if (fragmentInFrame != null) {
             super.onBackPressed();
+        }*/
+
+        String name = "";
+        if (fragmentInFrame instanceof SicklyInfoFragment) {
+            name = "SicklyInfoFragment";
+        } else if (fragmentInFrame instanceof SearchFragment) {
+            name = "SearchFragment";
+        } else if (fragmentInFrame instanceof ReportFragment) {
+            name = "ReportFragment";
+        } else if (fragmentInFrame instanceof SettingFragment) {
+            name = "SettingFragment";
+        } else if (fragmentInFrame instanceof GraphTestFragment) {
+            name = "GraphTestFragment";
+        } else if (fragmentInFrame instanceof CompeleteTestFragment) {
+            name = "CompeleteTestFragment";
+        } else if (fragmentInFrame instanceof ReportDetailFragment) {
+            name = "ReportDetailFragment";
+        } else if (fragmentInFrame instanceof UserSettingFragment) {
+            name = "UserSettingFragment";
+        } else if (fragmentInFrame instanceof DeviceSettingFragment) {
+            name = "DeviceSettingFragment";
+        } else if (fragmentInFrame instanceof ChangePasswordFragment) {
+            name = "ChangePasswordFragment";
+        } else if (fragmentInFrame instanceof BackupManageFragment) {
+            name = "BackupManageFragment";
+        } else if (fragmentInFrame instanceof BackupFragment) {
+            name = "BackupFragment";
+        } else if (fragmentInFrame instanceof ReportErrorFragment) {
+            name = "ReportErrorFragment";
+        } else if (fragmentInFrame instanceof GuideFragment) {
+            name = "GuideFragment";
+        } else if (fragmentInFrame instanceof AboutFragment) {
+            name = "AboutFragment";
+        } else if (fragmentInFrame instanceof ContactUsFragment) {
+            name = "ContactUsFragment";
+        } else {
+            name = "";
         }
 
-       /* if (fragmentInFrame instanceof SicklyInfoFragment) {
-            txt_title.setText("اطلاعات بیمار");
-        } else*/
-        if (fragmentInFrame instanceof SearchFragment) {
-            txt_title.setText("جستجو");
-        } else if (fragmentInFrame instanceof ReportFragment) {
-            txt_title.setText("گزارشات");
-        } else if (fragmentInFrame instanceof SettingFragment) {
-            txt_title.setText("تنظیمات");
-        } else if (fragmentInFrame instanceof GraphTestFragment) {
-            txt_title.setText("تست");
-        } else if (fragmentInFrame instanceof CompeleteTestFragment) {
-            txt_title.setText("اتمام تست");
-        } else if (fragmentInFrame instanceof ReportDetailFragment) {
-            txt_title.setText("جزییات گزارش");
-        } else if (fragmentInFrame instanceof UserSettingFragment) {
-            txt_title.setText("تنظیمات کاربری");
-        } else if (fragmentInFrame instanceof DeviceSettingFragment) {
-            txt_title.setText("تنظیمات دستگاه");
-        } else if (fragmentInFrame instanceof ChangePasswordFragment) {
-            txt_title.setText("تغییر رمز عبور");
-        } else if (fragmentInFrame instanceof BackupManageFragment) {
-            txt_title.setText("مدیریت پشتیبان ها");
-        } else if (fragmentInFrame instanceof BackupFragment) {
-            txt_title.setText("پشتیبان گیری");
-        } else if (fragmentInFrame instanceof ReportErrorFragment) {
-            txt_title.setText("گزارش خطا");
-        } else if (fragmentInFrame instanceof GuideFragment) {
-            txt_title.setText("راهنما");
-        } else if (fragmentInFrame instanceof AboutFragment) {
-            txt_title.setText("درباره ما");
-        } else if (fragmentInFrame instanceof ContactUsFragment) {
-            txt_title.setText("تماس باما");
-        } else {
-            txt_title.setText("");
-        }
+        EventBus.getDefault().post(new EventModel(name));
 
         if (fragmentInFrame == null) {
             txt_title.setText("");

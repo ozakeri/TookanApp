@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,8 +22,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.tokan.ir.R;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
+import com.tokan.ir.entity.User;
+import com.tokan.ir.model.EventModel;
 import com.tokan.ir.widget.BEditTextView;
 import com.tokan.ir.widget.BTextView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -97,6 +103,7 @@ public class CompeleteTestFragment extends Fragment {
     private double graph2LastXValue = 5d;
     private LineGraphSeries<DataPoint> mSeries;
     private LineGraphSeries<DataPoint> mSeries1;
+    private List<User> userList = new ArrayList<>();
 
     public CompeleteTestFragment() {
         // Required empty public constructor
@@ -137,8 +144,8 @@ public class CompeleteTestFragment extends Fragment {
             Customer customer = bundle.getParcelable("customer");
 
             if (customer != null) {
-                txt_name.setText(customer.getNameFamily());
-                txt_customer.setText(customer.getTestDate());
+                getUserList();
+                txt_customer.setText(customer.getNameFamily());
                 txt_nameFamily.setText(customer.getNameFamily());
                 txt_nationalCode.setText(customer.getNationalCode());
                 txt_sex.setText(customer.getSex());
@@ -172,6 +179,8 @@ public class CompeleteTestFragment extends Fragment {
                             customer.setComment(txt_comment.getText().toString());
                         }
                         saveData(customer);
+                        gotoFragment(new ReportFragment(), "ReportFragment");
+                        getActivity().finish();
                     }
                 });
             }
@@ -197,6 +206,38 @@ public class CompeleteTestFragment extends Fragment {
             }
         }
         new SaveData().execute();
+    }
+
+    public void getUserList() {
+        class GetInfo extends AsyncTask<Void, Void, List<User>> {
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                userList = DatabaseClient.getInstance(getActivity()).getAppDatabase().userDao().getUsers();
+                return userList;
+            }
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+
+                User user = users.get(0);
+                txt_name.setText(user.getNameFamily());
+
+                System.out.println("user.getPath()===" + user.getPath());
+            }
+        }
+
+        new GetInfo().execute();
+    }
+
+    private void gotoFragment(Fragment fragment, String name) {
+        EventBus.getDefault().post(new EventModel(name));
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.home_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 }

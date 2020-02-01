@@ -91,10 +91,11 @@ public class ReportFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Customer customer = customerList.get(position);
-                deleteReport(customer);
-               // Bundle bundle = new Bundle();
-               // bundle.putParcelable("customer", customer);
-               // gotoFragment(new ReportDetailFragment(), "ReportDetailFragment",bundle);
+                //deleteReport(customer);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("customer", customer);
+                gotoFragment(new ReportDetailFragment(), "ReportDetailFragment",bundle);
+                EventBus.getDefault().post(new EventModel("ReportDetailFragment"));
             }
         }));
 
@@ -129,7 +130,6 @@ public class ReportFragment extends Fragment {
 
     private void gotoFragment(Fragment fragment, String fragmentName,Bundle bundle) {
 
-        EventBus.getDefault().post(new EventModel("fragmentName"));
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
         if (frg == null) {

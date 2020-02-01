@@ -187,12 +187,7 @@ public class SicklyInfoFragment extends Fragment {
                 bundle.putString("sex", sex);
 
                 gotoFragment(new GraphTestFragment(), "GraphTestFragment", bundle );
-                /*GraphTestFragment fragment = new GraphTestFragment();
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragment.setArguments(bundle);
-                transaction.replace(R.id.home_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();*/
+
             }
         });
         return view;

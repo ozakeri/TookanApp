@@ -37,6 +37,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
+                        android:textSize = "22sp"
+                        android:textColor = "@color/them"
                         android:layout_marginRight="10dp" />
 
 
@@ -46,6 +48,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
+                        android:textSize = "22sp"
+                        android:textColor = "@color/them"
                         android:layout_marginLeft="10dp" />
 
                 </RelativeLayout>
@@ -88,6 +92,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
                             android:text="تاریخ تولد"/>
 
                     </LinearLayout>
@@ -114,6 +120,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
                             android:text="تاریخ آزمایش"/>
 
                     </LinearLayout>
@@ -135,7 +143,7 @@
                         <com.tokan.ir.widget.BTextView
                             android:id="@+id/txt_nationalCode"
                             android:layout_width="0dp"
-                            android:layout_height="29dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="right"/>
 
@@ -148,6 +156,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
                             android:text="کد ملی"/>
 
                     </LinearLayout>
@@ -174,6 +184,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
                             android:text="نام و نام خانوادگی"/>
 
                     </LinearLayout>
@@ -200,6 +212,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
                             android:text="جنسیت"/>
 
                     </LinearLayout>

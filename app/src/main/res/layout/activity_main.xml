@@ -6,270 +6,299 @@
     tools:context=".MainActivity">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/image_backgrund">
 
-        <include
+
+        <RelativeLayout
             android:id="@+id/toolbar"
-            layout="@layout/toolbar_layout" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_arrow"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:background="@mipmap/ic_launcher" />
+
+            <com.tokan.ir.widget.BTextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/img_arrow"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <!-- <include
+             android:id="@+id/toolbar"
+             layout="@layout/toolbar_layout" />-->
 
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar">
 
             <!--android:layout_above="@+id/tabs_lin"-->
 
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/height">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-
-                    <com.tokan.ir.widget.BTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="یوروفلومتری"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <com.tokan.ir.widget.BTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="20dp"
-                        android:text="Uroflowmetry"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/img_user"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="10dp"
-                        android:layout_marginTop="20dp" />
-
-
-                    <com.tokan.ir.widget.BTextView
-                        android:id="@+id/txt_username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text="Uroflowmetry"
-                        android:textColor="@color/them"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_search"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:onClick="search">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:background="@drawable/icon_search" />
-
-
-                                <com.tokan.ir.widget.BTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="جستجوس بیماران" />
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_test"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:onClick="test"
-                            android:text="شروع تست">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:background="@drawable/icon_test" />
-
-
-                                <com.tokan.ir.widget.BTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="شروع تست" />
-
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_setting"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:onClick="setting"
-
-                            >
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:background="@drawable/icon_setting" />
-
-
-                                <com.tokan.ir.widget.BTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="تنظیمات" />
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/btn_report"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"
-                            android:onClick="report"
-
-                            >
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <androidx.appcompat.widget.AppCompatImageView
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:background="@drawable/icons_report" />
-
-
-                                <com.tokan.ir.widget.BTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="گزارشات" />
-
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-    </RelativeLayout>
-
-            <FrameLayout
-                android:id="@+id/home_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/height"
-                tools:context=".FrameLayout"/>
-
-
-            <RelativeLayout
-                android:id="@+id/layout_drawer"
-                android:layout_width="300dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:background="@color/white">
-
-
                 <RelativeLayout
-                    android:id="@+id/layout_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_height="match_parent">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/img_userProfile"
-                        android:layout_width="103dp"
-                        android:layout_height="100dp"
-                        android:layout_centerHorizontal="true"
-                        android:background="@mipmap/ic_launcher" />
 
-                    <com.tokan.ir.widget.BTextView
-                        android:id="@+id/txt_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/img_userProfile"
-                        android:layout_centerHorizontal="true"
-                        android:textColor="@color/black" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+
+                            <com.tokan.ir.widget.BTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="یوروفلومتری"
+                                android:textColor="@color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <com.tokan.ir.widget.BTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginTop="20dp"
+                                android:text="Uroflowmetry"
+                                android:textColor="@color/white"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/img_user"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_margin="10dp"
+                                android:layout_marginTop="20dp" />
+
+
+                            <com.tokan.ir.widget.BTextView
+                                android:id="@+id/txt_username"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:text="Uroflowmetry"
+                                android:textColor="@color/them"
+                                android:textSize="24sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btn_search"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="20dp"
+                                    android:layout_weight="1"
+                                    android:onClick="search">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/icon_search" />
+
+
+                                        <com.tokan.ir.widget.BTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="جستجوس بیماران" />
+
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btn_test"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="20dp"
+                                    android:layout_weight="1"
+                                    android:onClick="test"
+                                    android:text="شروع تست">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/icon_test" />
+
+
+                                        <com.tokan.ir.widget.BTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="شروع تست" />
+
+
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1">
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btn_setting"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="20dp"
+                                    android:layout_weight="1"
+                                    android:onClick="setting"
+
+                                    >
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/icon_setting" />
+
+
+                                        <com.tokan.ir.widget.BTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="تنظیمات" />
+
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/btn_report"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="20dp"
+                                    android:layout_weight="1"
+                                    android:onClick="report"
+
+                                    >
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/icons_report" />
+
+
+                                        <com.tokan.ir.widget.BTextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="گزارشات" />
+
+                                    </LinearLayout>
+                                </androidx.cardview.widget.CardView>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    <FrameLayout
+                        android:id="@+id/home_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
 
                 </RelativeLayout>
 
-                <View
-                    android:id="@+id/view_separator"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_below="@+id/layout_profile"
-                    android:layout_margin="10dp"
-                    android:background="@color/black" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listView_drawer"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/layout_drawer"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/view_separator"
-                    android:choiceMode="singleChoice"
-                    android:divider="@color/transparent_black"
-                    android:dividerHeight="5dp" />
+                    android:layout_gravity="right"
+                    android:background="@color/white">
 
-            </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layout_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_userProfile"
+                            android:layout_width="103dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:background="@mipmap/ic_launcher" />
+
+                        <com.tokan.ir.widget.BTextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img_userProfile"
+                            android:layout_centerHorizontal="true"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/view_separator"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_below="@+id/layout_profile"
+                        android:layout_margin="10dp"
+                        android:background="@color/black" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listView_drawer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/view_separator"
+                        android:choiceMode="singleChoice"
+                        android:divider="@color/transparent_black"
+                        android:dividerHeight="5dp" />
+
+                </RelativeLayout>
+
+
 
         </androidx.drawerlayout.widget.DrawerLayout>
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
