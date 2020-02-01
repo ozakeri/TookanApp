@@ -172,7 +172,6 @@ public class CompeleteTestFragment extends Fragment {
                             customer.setComment(txt_comment.getText().toString());
                         }
                         saveData(customer);
-                        getActivity().finish();
                     }
                 });
             }

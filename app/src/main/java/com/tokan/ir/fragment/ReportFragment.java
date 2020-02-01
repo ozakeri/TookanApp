@@ -91,11 +91,13 @@ public class ReportFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Customer customer = customerList.get(position);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("customer", customer);
-                gotoFragment(new ReportDetailFragment(), "ReportDetailFragment",bundle);
+                deleteReport(customer);
+               // Bundle bundle = new Bundle();
+               // bundle.putParcelable("customer", customer);
+               // gotoFragment(new ReportDetailFragment(), "ReportDetailFragment",bundle);
             }
         }));
+
         return view;
     }
 
@@ -142,5 +144,23 @@ public class ReportFragment extends Fragment {
         fragmentTransaction.commit();
 
         FragmentUtil.printActivityFragmentList(fragmentManager);
+    }
+
+    public void deleteReport(Customer customer) {
+        class DeleteReport extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient.getInstance(getActivity()).getAppDatabase().customerDao().deleteCustomer(customer);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }
+
+        new DeleteReport().execute();
     }
 }

@@ -1,5 +1,7 @@
 package com.tokan.ir.adapter;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.R;
+import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
 import com.tokan.ir.widget.BTextView;
 
@@ -53,6 +56,16 @@ public class SearchListAdapter extends RecyclerView.Adapter<SearchListAdapter.Cu
             super(itemView);
             txt_name = itemView.findViewById(R.id.txt_name);
             txt_sex = itemView.findViewById(R.id.txt_sex);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    System.out.println("-+-+-+--+-+-");
+
+                    return true;
+                }
+            });
         }
     }
+
 }

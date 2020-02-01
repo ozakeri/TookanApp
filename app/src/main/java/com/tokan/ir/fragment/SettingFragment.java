@@ -1,10 +1,17 @@
 package com.tokan.ir.fragment;
 
 
+import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -13,7 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.R;
-import com.tokan.ir.application.TokanApplication;
+import com.tokan.ir.database.DatabaseClient;
+import com.tokan.ir.entity.Backup;
 import com.tokan.ir.model.EventModel;
 import com.tokan.ir.utils.FragmentUtil;
 import com.tokan.ir.utils.RecyclerItemClickListener;
@@ -22,13 +30,16 @@ import com.tokan.ir.widget.drawer.DrawerItem;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.tokan.ir.R2.id.home_container;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +52,10 @@ public class SettingFragment extends Fragment {
     private static List<DrawerItem> dataList;
     private static DrawerAdapter adapter;
 
+    private List<Backup> backupList = new ArrayList<>();
+
+    public static final String PACKAGE_NAME = "com.tokan.ir";
+    public static final String DATABASE_NAME = "MyDatabase.db";
 
     public SettingFragment() {
         // Required empty public constructor
@@ -98,7 +113,8 @@ public class SettingFragment extends Fragment {
 
                     case 4:
                         // fragmentTransaction(new BackupFragment(), "BackupFragment");
-                        gotoFragment(new BackupFragment(), "BackupFragment");
+                        //gotoFragment(new BackupFragment(), "BackupFragment");
+                        showDialog();
                         break;
 
                     case 5:
@@ -134,4 +150,81 @@ public class SettingFragment extends Fragment {
         FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 
+
+    public void showDialog() {
+        Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.fragment_backup);
+        dialog.show();
+        Button btn_no = dialog.findViewById(R.id.btn_No);
+        Button btn_yes = dialog.findViewById(R.id.btn_Yes);
+
+        btn_yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                backup();
+                dialog.dismiss();
+            }
+        });
+
+        btn_no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
+    private void backup() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+            System.out.println("=-=-=-=-=-+++++++++++");
+            if (sd.canWrite()) {
+                //String currentDbPath = "//data//com.bluapp.androidview//databases//UserDb";
+                String currentDbPath = "//data/com.tokan.ir/databases/MyDatabase";
+                String backupPath = "BackupMyDatabase" + new Date() + ".db";
+                File currentDb = new File(data, currentDbPath);
+                File backupDb = new File(sd, backupPath);
+                FileChannel src = new FileInputStream(currentDb).getChannel();
+                FileChannel dst = new FileOutputStream(backupDb).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(getActivity(), "Backup successfully", Toast.LENGTH_LONG).show();
+                saveBackup(backupPath,currentDbPath,DATABASE_NAME,PACKAGE_NAME);
+                System.out.println("=-=-=-=-=-+++++++++++1212121");
+            }
+
+        } catch (Exception e) {
+            Log.e("Error====", e.getMessage());
+        }
+    }
+
+
+    public void saveBackup(String backupPath, String currentDbPath, String databaseName, String packageName) {
+        class BackupList extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Backup backup = new Backup();
+
+                backup.setBackupPath(backupPath);
+                backup.setCurrentDbPath(currentDbPath);
+                backup.setDatabaseName(databaseName);
+                backup.setPackageName(packageName);
+                DatabaseClient.getInstance(getActivity()).getAppDatabase().backupDao().insertBackup(backup);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+            }
+        }
+
+        new BackupList().execute();
+    }
 }
