@@ -298,8 +298,8 @@ public class AddUserInfoActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                startActivity(new Intent(getApplicationContext(), AddUserInfoActivity.class));
-                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "اطلاعات ذخیره شد", Toast.LENGTH_LONG).show();
             }
         }
 

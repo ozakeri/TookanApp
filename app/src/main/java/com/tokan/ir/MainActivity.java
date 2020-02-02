@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //txt_title.setVisibility(View.GONE);
-        img_arrow.setBackgroundResource(R.drawable.ic_slidemenu);
+        img_arrow.setBackgroundResource(R.drawable.menu_icon);
 
 
         img_arrow.setOnClickListener(new View.OnClickListener() {
@@ -208,7 +208,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Subscribe
     public void getFragmentName(EventModel model) {
-
         getFragmentName(model.getFragmentNAme());
     }
 
@@ -226,53 +225,51 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
-        Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.home_container);
-        /*if (fragmentInFrame != null) {
-            super.onBackPressed();
-        }*/
-
-        String name = "";
-        if (fragmentInFrame instanceof SicklyInfoFragment) {
-            name = "SicklyInfoFragment";
-        } else if (fragmentInFrame instanceof SearchFragment) {
-            name = "SearchFragment";
-        } else if (fragmentInFrame instanceof ReportFragment) {
-            name = "ReportFragment";
-        } else if (fragmentInFrame instanceof SettingFragment) {
-            name = "SettingFragment";
-        } else if (fragmentInFrame instanceof GraphTestFragment) {
-            name = "GraphTestFragment";
-        } else if (fragmentInFrame instanceof CompeleteTestFragment) {
-            name = "CompeleteTestFragment";
-        } else if (fragmentInFrame instanceof ReportDetailFragment) {
-            name = "ReportDetailFragment";
-        } else if (fragmentInFrame instanceof UserSettingFragment) {
-            name = "UserSettingFragment";
-        } else if (fragmentInFrame instanceof DeviceSettingFragment) {
-            name = "DeviceSettingFragment";
-        } else if (fragmentInFrame instanceof ChangePasswordFragment) {
-            name = "ChangePasswordFragment";
-        } else if (fragmentInFrame instanceof BackupManageFragment) {
-            name = "BackupManageFragment";
-        } else if (fragmentInFrame instanceof BackupFragment) {
-            name = "BackupFragment";
-        } else if (fragmentInFrame instanceof ReportErrorFragment) {
-            name = "ReportErrorFragment";
-        } else if (fragmentInFrame instanceof GuideFragment) {
-            name = "GuideFragment";
-        } else if (fragmentInFrame instanceof AboutFragment) {
-            name = "AboutFragment";
-        } else if (fragmentInFrame instanceof ContactUsFragment) {
-            name = "ContactUsFragment";
-        } else {
-            name = "";
+        if (drawerLayout.isDrawerOpen(layout_drawer)) {
+            drawerLayout.closeDrawer(layout_drawer);
+            return;
         }
+        Fragment fragmentInFrame = getSupportFragmentManager().findFragmentById(R.id.home_container);
+        System.out.println("fragmentInFrame=====" + fragmentInFrame);
+        if (fragmentInFrame != null) {
+            super.onBackPressed();
 
-        EventBus.getDefault().post(new EventModel(name));
-
-        if (fragmentInFrame == null) {
+            if (fragmentInFrame instanceof SicklyInfoFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof SearchFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof ReportFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof SettingFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof GraphTestFragment) {
+                txt_title.setText("تست");
+            } else if (fragmentInFrame instanceof CompeleteTestFragment) {
+                txt_title.setText("اتمام تست");
+            } else if (fragmentInFrame instanceof ReportDetailFragment) {
+                txt_title.setText("گزارشات");
+            } else if (fragmentInFrame instanceof UserSettingFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof DeviceSettingFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof ChangePasswordFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof BackupManageFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof BackupFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof ReportErrorFragment) {
+                txt_title.setText("تنظیمات");
+            } else if (fragmentInFrame instanceof GuideFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof AboutFragment) {
+                txt_title.setText("");
+            } else if (fragmentInFrame instanceof ContactUsFragment) {
+                txt_title.setText("");
+            }
+            // EventBus.getDefault().post(new EventModel(name));
+            getUserList();
+        } else {
             txt_title.setText("");
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -288,7 +285,6 @@ public class MainActivity extends AppCompatActivity {
                     doubleBackToExitPressedOnce = false;
                 }
             }, 2000);
-
         }
     }
 

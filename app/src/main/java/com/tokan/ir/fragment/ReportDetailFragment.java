@@ -104,6 +104,7 @@ public class ReportDetailFragment extends Fragment {
         graphView2.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView2.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
         graphView2.getViewport().setScrollableY(true);  // activate vertical scrolling
+        txt_comment.setVerticalScrollBarEnabled(true);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {

@@ -12,32 +12,6 @@
         android:background="@drawable/image_backgrund">
 
 
-        <RelativeLayout
-            android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_arrow"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:background="@mipmap/ic_launcher" />
-
-            <com.tokan.ir.widget.BTextView
-                android:id="@+id/txt_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_margin="10dp"
-                android:layout_toLeftOf="@+id/img_arrow"
-                android:textColor="@color/white"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
         <!-- <include
              android:id="@+id/toolbar"
              layout="@layout/toolbar_layout" />-->
@@ -45,8 +19,7 @@
         <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/drawerLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar">
+            android:layout_height="match_parent">
 
             <!--android:layout_above="@+id/tabs_lin"-->
 
@@ -70,6 +43,7 @@
                                 android:text="یوروفلومتری"
                                 android:textColor="@color/white"
                                 android:textSize="24sp"
+                                android:layout_marginTop="50dp"
                                 android:textStyle="bold" />
 
                             <com.tokan.ir.widget.BTextView
@@ -237,10 +211,38 @@
 
                         </LinearLayout>
 
+
+                    <RelativeLayout
+                        android:id="@+id/toolbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_arrow"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/menu_icon" />
+
+                        <com.tokan.ir.widget.BTextView
+                            android:id="@+id/txt_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="10dp"
+                            android:layout_toLeftOf="@+id/img_arrow"
+                            android:textColor="@color/white"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
                     <FrameLayout
                         android:id="@+id/home_container"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/toolbar"/>
 
                 </RelativeLayout>
 
@@ -256,23 +258,17 @@
                     <RelativeLayout
                         android:id="@+id/layout_profile"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/img_userProfile"
-                            android:layout_width="103dp"
-                            android:layout_height="100dp"
-                            android:layout_centerHorizontal="true"
-                            android:background="@mipmap/ic_launcher" />
+                        android:layout_height="200dp"
+                        android:background="@color/them">
 
                         <com.tokan.ir.widget.BTextView
                             android:id="@+id/txt_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/img_userProfile"
-                            android:layout_centerHorizontal="true"
-                            android:textColor="@color/black" />
+                            android:layout_centerInParent="true"
+                            android:text="یوروفلومتری"
+                            android:textSize="22sp"
+                            android:textColor="@color/white" />
 
                     </RelativeLayout>
 
@@ -301,4 +297,5 @@
         </androidx.drawerlayout.widget.DrawerLayout>
 
     </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

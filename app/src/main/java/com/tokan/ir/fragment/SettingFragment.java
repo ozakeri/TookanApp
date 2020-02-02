@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokan.ir.R;
+import com.tokan.ir.callback.OnBackPressedListener;
 import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Backup;
 import com.tokan.ir.model.EventModel;
@@ -45,7 +47,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment {
+public class SettingFragment extends Fragment implements OnBackPressedListener {
 
     @BindView(R.id.recycler_view)
     RecyclerView recycler_view;
@@ -133,6 +135,7 @@ public class SettingFragment extends Fragment {
             }
         }));
 
+        //backPress(view);
         return view;
     }
 
@@ -251,5 +254,29 @@ public class SettingFragment extends Fragment {
         }
 
         new BackupList().execute();
+    }
+
+   /* public void backPress(View view) {
+        EventBus.getDefault().post(new EventModel(""));
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.i("TAG", "keyCode: " + keyCode);
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+                    Log.i("TAG", "onKey Back listener is working!!!");
+                    getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }*/
+
+    @Override
+    public void doBack() {
+        getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
     }
 }
