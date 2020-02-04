@@ -17,15 +17,9 @@ import java.util.Date;
 
 public class Server extends AppCompatActivity {
     private ServerSocket serverSocket;
-
     Handler updateConversationHandler;
-
     Thread serverThread = null;
-
     private TextView text;
-
-
-
     public static final int SERVERPORT = 8888;
 
     @Override
@@ -37,7 +31,6 @@ public class Server extends AppCompatActivity {
         text = (TextView) findViewById(R.id.text2);
 
         updateConversationHandler = new Handler();
-
         this.serverThread = new Thread(new ServerThread());
         this.serverThread.start();
 

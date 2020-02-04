@@ -116,6 +116,10 @@ public class ReportDetailFragment extends Fragment {
                 txt_comment.setText(customer.getComment());
                 System.out.println("txt_comment====" + customer.getComment());
 
+                System.out.println("-+-+-+-+-+-+-+" + customer.getStartTime());
+                System.out.println("" + customer.getEndTime());
+                System.out.println("" + customer.getDelayTime());
+
                 Gson gson = new Gson();
                 String json1 = customer.getFlowValue();
                 String json2 = customer.getVolumeValue();
