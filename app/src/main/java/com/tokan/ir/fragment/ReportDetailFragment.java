@@ -19,6 +19,7 @@ import com.tokan.ir.widget.BTextView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,9 +54,6 @@ public class ReportDetailFragment extends Fragment {
     @BindView(R.id.txt_voidingTime)
     BTextView txt_voidingTime;
 
-    @BindView(R.id.txt_interval)
-    BTextView txt_interval;
-
     @BindView(R.id.txt_delayTime)
     BTextView txt_delayTime;
 
@@ -73,6 +71,7 @@ public class ReportDetailFragment extends Fragment {
     private double graph2LastXValue = 5d;
     private LineGraphSeries<DataPoint> mSeries;
     private LineGraphSeries<DataPoint> mSeries1;
+    private double maxFlow = 0;
 
     public ReportDetailFragment() {
         // Required empty public constructor
@@ -91,7 +90,7 @@ public class ReportDetailFragment extends Fragment {
         mSeries1 = new LineGraphSeries<>();
         graphView1.getViewport().setXAxisBoundsManual(true);
         graphView1.getViewport().setMinX(0);
-        graphView1.getViewport().setMaxX(40);
+        graphView1.getViewport().setMaxX(100);
         graphView1.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView1.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView1.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -99,7 +98,7 @@ public class ReportDetailFragment extends Fragment {
 
         graphView2.getViewport().setXAxisBoundsManual(true);
         graphView2.getViewport().setMinX(0);
-        graphView2.getViewport().setMaxX(40);
+        graphView2.getViewport().setMaxX(100);
         graphView2.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView2.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView2.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -114,11 +113,6 @@ public class ReportDetailFragment extends Fragment {
                 txt_name.setText(customer.getNameFamily());
                 txt_date.setText(customer.getTestDate());
                 txt_comment.setText(customer.getComment());
-                System.out.println("txt_comment====" + customer.getComment());
-
-                System.out.println("-+-+-+-+-+-+-+" + customer.getStartTime());
-                System.out.println("" + customer.getEndTime());
-                System.out.println("" + customer.getDelayTime());
 
                 Gson gson = new Gson();
                 String json1 = customer.getFlowValue();
@@ -139,14 +133,33 @@ public class ReportDetailFragment extends Fragment {
                 graphView1.addSeries(mSeries);
                 graphView2.addSeries(mSeries1);
 
-                //*************************
                 double sum = 0;
-                for (double d : doubleList) {
+                for (double d : doubleList1) {
                     sum += d;
                 }
-                String avg = String.valueOf(sum / doubleList.size());
-                txt_averageFlowRate.setText(avg);
-                txt_maximumFlowRate.setText(String.valueOf(sum));
+                String avgFlow = String.valueOf(sum / doubleList1.size());
+                txt_averageFlowRate.setText(avgFlow);
+
+                for (double d : doubleList1) {
+                    if (maxFlow < d) {
+                        maxFlow = d;
+                    }
+                }
+                txt_maximumFlowRate.setText(String.valueOf((int) maxFlow));
+
+                double flowSum = 0;
+                for (double d : doubleList1) {
+                    flowSum += d;
+                }
+                String avg = String.valueOf(flowSum);
+                txt_flowTime.setText(avg);
+
+                txt_voidedVolume.setText(customer.getVoidedVolume());
+
+                getVodingTime(customer.getStartVoidedTime(), customer.getEndVoidedTime());
+                getDelayTime(customer.getStartVoidedTime(), customer.getDelayTime());
+                getTimeMaxFlow(customer.getStartFlowTime(), customer.getTimeToMaxFlow());
+
                 //*************************
             }
 
@@ -155,6 +168,99 @@ public class ReportDetailFragment extends Fragment {
 
 
         return view;
+    }
+
+    public void getVodingTime(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+            //d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes11, ");
+            System.out.print(diffSeconds + " seconds11.");
+            txt_voidingTime.setText(String.valueOf((int) diffSeconds));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getDelayTime(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+            // d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes22, ");
+            System.out.print(diffSeconds + " seconds22.");
+            txt_delayTime.setText(String.valueOf((int) diffSeconds));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getTimeMaxFlow(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+
+        System.out.println("dateStart===" + dateStart);
+        System.out.println("dateStop===" + dateStop);
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+            // d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes333, ");
+            System.out.print(diffSeconds + " seconds333.");
+            txt_timeToMaximumFlow.setText((int) diffSeconds + " seconds");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

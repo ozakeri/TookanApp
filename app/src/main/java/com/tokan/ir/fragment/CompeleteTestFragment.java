@@ -24,13 +24,14 @@ import com.tokan.ir.database.DatabaseClient;
 import com.tokan.ir.entity.Customer;
 import com.tokan.ir.entity.User;
 import com.tokan.ir.model.EventModel;
-import com.tokan.ir.widget.BEditTextView;
 import com.tokan.ir.widget.BTextView;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -80,9 +81,6 @@ public class CompeleteTestFragment extends Fragment {
     @BindView(R.id.txt_voidingTime)
     BTextView txt_voidingTime;
 
-    @BindView(R.id.txt_interval)
-    BTextView txt_interval;
-
     @BindView(R.id.txt_delayTime)
     BTextView txt_delayTime;
 
@@ -100,10 +98,11 @@ public class CompeleteTestFragment extends Fragment {
 
     private List<Double> doubleList = new ArrayList<>();
     private List<Double> doubleList1 = new ArrayList<>();
-    private double graph2LastXValue = 5d;
+    private double graph2LastXValue = 1d;
     private LineGraphSeries<DataPoint> mSeries;
     private LineGraphSeries<DataPoint> mSeries1;
     private List<User> userList = new ArrayList<>();
+    private double maxFlow = 0;
 
     public CompeleteTestFragment() {
         // Required empty public constructor
@@ -125,7 +124,7 @@ public class CompeleteTestFragment extends Fragment {
         mSeries1 = new LineGraphSeries<>();
         graphView1.getViewport().setXAxisBoundsManual(true);
         graphView1.getViewport().setMinX(0);
-        graphView1.getViewport().setMaxX(40);
+        graphView1.getViewport().setMaxX(100);
         graphView1.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView1.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView1.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -133,7 +132,7 @@ public class CompeleteTestFragment extends Fragment {
 
         graphView2.getViewport().setXAxisBoundsManual(true);
         graphView2.getViewport().setMinX(0);
-        graphView2.getViewport().setMaxX(40);
+        graphView2.getViewport().setMaxX(100);
         graphView2.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView2.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView2.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -162,15 +161,45 @@ public class CompeleteTestFragment extends Fragment {
                 doubleList1 = gson.fromJson(json2, type);
                 for (double d : doubleList) {
                     graph2LastXValue += 1d;
-                    mSeries.appendData(new DataPoint(graph2LastXValue, d), true, 3000);
+                    mSeries.appendData(new DataPoint(graph2LastXValue, d), true, 10000);
                 }
 
                 for (double d : doubleList1) {
                     graph2LastXValue += 1d;
-                    mSeries1.appendData(new DataPoint(graph2LastXValue, d), true, 3000);
+                    mSeries1.appendData(new DataPoint(graph2LastXValue, d), true, 10000);
                 }
                 graphView1.addSeries(mSeries);
                 graphView2.addSeries(mSeries1);
+
+                double sum = 0;
+                for (double d : doubleList1) {
+                    sum += d;
+                }
+                String avgFlow = String.valueOf(sum / doubleList1.size());
+                txt_averageFlowRate.setText(avgFlow);
+
+
+                for (double d : doubleList1) {
+                    if (maxFlow < d) {
+                        maxFlow = d;
+                    }
+                }
+                txt_maximumFlowRate.setText(String.valueOf((int) maxFlow));
+
+                double flowSum = 0;
+                for (double d : doubleList1) {
+                    flowSum += d;
+                }
+                String avg = String.valueOf(flowSum);
+                txt_flowTime.setText(avg);
+
+                txt_voidedVolume.setText(customer.getVoidedVolume());
+
+
+                getVodingTime(customer.getStartVoidedTime(), customer.getEndVoidedTime());
+                getDelayTime(customer.getStartVoidedTime(), customer.getDelayTime());
+                getTimeMaxFlow(customer.getStartFlowTime(), customer.getTimeToMaxFlow());
+                // txt_voidingTime.setText();
 
 
                 btn_save.setOnClickListener(new View.OnClickListener() {
@@ -239,5 +268,94 @@ public class CompeleteTestFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     }
+
+
+    public void getVodingTime(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+            //d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes11, ");
+            System.out.print(diffSeconds + " seconds11.");
+            txt_voidingTime.setText(String.valueOf((int) diffSeconds));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getDelayTime(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+           // d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes22, ");
+            System.out.print(diffSeconds + " seconds22.");
+            txt_delayTime.setText(String.valueOf((int) diffSeconds));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getTimeMaxFlow(String dateStart, String dateStop) {
+
+        //HH converts hour in 24 hours format (0-23), day calculation
+        //SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+
+        Date d1 = new Date(dateStart);
+        Date d2 = new Date(dateStop);
+
+        try {
+            //d1 = format.parse(dateStart);
+           // d2 = format.parse(dateStop);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000) % 24;
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            System.out.print(diffMinutes + " minutes22, ");
+            System.out.print(diffSeconds + " seconds22.");
+            txt_timeToMaximumFlow.setText((int) diffSeconds + " seconds");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

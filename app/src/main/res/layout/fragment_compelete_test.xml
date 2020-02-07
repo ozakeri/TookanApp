@@ -428,32 +428,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="4"
-                                android:text="Interval" />
-
-                            <com.tokan.ir.widget.BTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.5"
-                                android:text=":" />
-
-                            <com.tokan.ir.widget.BTextView
-                                android:id="@+id/txt_interval"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="3" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginBottom="2dp">
-
-                            <com.tokan.ir.widget.BTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="4"
                                 android:text="Delay time" />
 
                             <com.tokan.ir.widget.BTextView

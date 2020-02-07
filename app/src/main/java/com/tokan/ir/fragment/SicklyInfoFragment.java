@@ -288,7 +288,7 @@ public class SicklyInfoFragment extends Fragment implements OnBackPressedListene
         final WheelView wheel_view1 = dialog_wait.findViewById(R.id.wheel_view1);
         final WheelView wheel_view2 = dialog_wait.findViewById(R.id.wheel_view2);
 
-        wheel_view1.setSeletion(8);
+        wheel_view1.setSeletion(Calendar.getInstance().getTime().getHours());
         wheel_view1.setItems(hourArrayList);
         wheel_view1.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
@@ -298,7 +298,7 @@ public class SicklyInfoFragment extends Fragment implements OnBackPressedListene
         });
 
 
-        wheel_view2.setSeletion(0);
+        wheel_view2.setSeletion(Calendar.getInstance().getTime().getMinutes());
         wheel_view2.setItems(minuteArrayList);
         wheel_view2.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override

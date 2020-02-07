@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -36,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,15 +64,25 @@ public class GraphTestFragment extends Fragment {
     private Date startTime;
     private Date endTime;
     private Date start1;
+    private Date startFlow;
+    private Date endFlow;
+    private Date timeToMaxFlow;
     private boolean start = false;
+    private boolean isStartFlow = false;
 
-    private ServerSocket serverSocket;
+    private ServerSocket serverSocket = null;
     Handler updateConversationHandler;
     Thread serverThread = null;
     private TextView text;
     public static final int SERVERPORT = 8888;
     private int number = 0;
     private RelativeLayout relative_Layout;
+    private String numberOnly = null;
+    private int numberOne = 0;
+    private String msg = null;
+    private GraphTestFragment.CommunicationThread commThread;
+    private int flow = 0, resultFlow = 0;
+    private int maxFlow = 0 , voidedVolume = 0;
 
     public GraphTestFragment() {
         // Required empty public constructor
@@ -87,7 +97,7 @@ public class GraphTestFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph_test, container, false);
-
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         relative_Layout = view.findViewById(R.id.relative_Layout);
         relative_Layout.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +125,7 @@ public class GraphTestFragment extends Fragment {
         graphView1.addSeries(mSeries1);
         graphView1.getViewport().setXAxisBoundsManual(true);
         graphView1.getViewport().setMinX(0);
-        graphView1.getViewport().setMaxX(40);
+        graphView1.getViewport().setMaxX(100);
         graphView1.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView1.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView1.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -124,7 +134,7 @@ public class GraphTestFragment extends Fragment {
         graphView2.addSeries(mSeries2);
         graphView2.getViewport().setXAxisBoundsManual(true);
         graphView2.getViewport().setMinX(0);
-        graphView2.getViewport().setMaxX(40);
+        graphView2.getViewport().setMaxX(100);
         graphView2.getViewport().setScalable(true);  // activate horizontal zooming and scrolling
         graphView2.getViewport().setScrollable(true);  // activate horizontal scrolling
         graphView2.getViewport().setScalableY(true);  // activate horizontal and vertical zooming and scrolling
@@ -138,7 +148,14 @@ public class GraphTestFragment extends Fragment {
 
                 if (isActionClick) {
                     endTime = Calendar.getInstance().getTime();
+                    endFlow = Calendar.getInstance().getTime();
                     saveData();
+
+                    try {
+                        serverSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     btn_action.setText("پایان تست");
                     isActionClick = true;
@@ -147,23 +164,6 @@ public class GraphTestFragment extends Fragment {
 
                     getData();
 
-                    /*mTimer2 = new Runnable() {
-                        @Override
-                        public void run() {
-
-                            graph1LastXValue += 1d;
-                            System.out.println("getRandom====" + getRandom());
-                            System.out.println("getRandom11====" + getRandom1());
-                            doubleListX1.add(getRandom());
-                            doubleListX2.add(getRandom1());
-                            mSeries1.appendData(new DataPoint(graph1LastXValue, getRandom()), true, 1000);
-                            mSeries2.appendData(new DataPoint(graph1LastXValue, getRandom1()), true, 1000);
-
-                            mHandler.postDelayed(this, 200);
-                        }
-                    };
-                    mHandler.postDelayed(mTimer2, 300);*/
-
                 }
             }
         });
@@ -171,25 +171,6 @@ public class GraphTestFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onPause() {
-        mHandler.removeCallbacks(mTimer2);
-        super.onPause();
-    }
-
-
-    double mLastRandom1 = 0;
-    double mLastRandom2 = 0;
-    Random mRand = new Random();
-
-    private double getRandom() {
-        return mLastRandom1 = mRand.nextInt(1000);
-    }
-
-    private double getRandom1() {
-        return mLastRandom2 += mRand.nextInt(1000);
-    }
 
     public void saveData() {
 
@@ -207,10 +188,14 @@ public class GraphTestFragment extends Fragment {
         customer.setSex(sex);
         customer.setFlowValue(json1);
         customer.setVolumeValue(json2);
+        customer.setVoidedVolume(String.valueOf(voidedVolume));
 
-        customer.setStartTime(String.valueOf(startTime));
-        customer.setEndTime(String.valueOf(endTime));
+        customer.setStartVoidedTime(String.valueOf(startTime));
+        customer.setEndVoidedTime(String.valueOf(endTime));
         customer.setDelayTime(String.valueOf(start1));
+        customer.setStartFlowTime(String.valueOf(startFlow));
+        customer.setEndFlowTime(String.valueOf(endFlow));
+        customer.setTimeToMaxFlow(String.valueOf(timeToMaxFlow));
 
         Bundle bundle = new Bundle();
         bundle.putParcelable("customer", customer);
@@ -237,15 +222,6 @@ public class GraphTestFragment extends Fragment {
         FragmentUtil.printActivityFragmentList(fragmentManager);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        try {
-            serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void getData() {
         updateConversationHandler = new Handler();
@@ -267,10 +243,11 @@ public class GraphTestFragment extends Fragment {
 
                 try {
 
-                    socket = serverSocket.accept();
-
-                    GraphTestFragment.CommunicationThread commThread = new GraphTestFragment.CommunicationThread(socket);
-                    new Thread(commThread).start();
+                    if (!serverSocket.isClosed()) {
+                        socket = serverSocket.accept();
+                        commThread = new GraphTestFragment.CommunicationThread(socket);
+                        new Thread(commThread).start();
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -283,7 +260,7 @@ public class GraphTestFragment extends Fragment {
 
         private Socket clientSocket;
 
-        private BufferedReader input;
+        private BufferedReader input = null;
 
         public CommunicationThread(Socket clientSocket) {
 
@@ -323,41 +300,63 @@ public class GraphTestFragment extends Fragment {
     }
 
     class updateUIThread implements Runnable {
-        private String msg;
+
 
         public updateUIThread(String str) {
-            this.msg = str;
+            msg = str;
         }
 
         @Override
         public void run() {
             System.out.println("Client Says: " + msg);
-            String numberOnly = msg.replaceAll("[^0-9]", "");
+            numberOnly = msg.replaceAll("[^0-9]", "");
             System.out.println("numberOnly====" + numberOnly);
-            number += Integer.parseInt(numberOnly);
-            int numberOne = Integer.parseInt(numberOnly);
 
-            if (!start) {
-                if ((double) (numberOne / 10) >= 60) {
+            numberOne = Integer.parseInt(numberOnly);
+            voidedVolume += numberOne;
+            resultFlow = numberOne - flow;
+
+
+            if (numberOne > 0) {
+                if (!start) {
                     start1 = new Date();
                     start = true;
                 }
             }
 
-
-            graph1LastXValue += 1d;
-            doubleListX1.add((double) (numberOne / 10));
-            //doubleListX2.add((double) number);
-            mSeries1.appendData(new DataPoint(graph1LastXValue, (double) (numberOne / 10)), true, 3000);
-            // mSeries2.appendData(new DataPoint(graph1LastXValue, number), true, 3000);
+            graph1LastXValue += 0.5d;
+            doubleListX1.add((double) (numberOne));
 
 
-            System.out.println("Double====" + Double.valueOf(numberOnly));
+            if (resultFlow < 0) {
+                resultFlow = 0;
+            }
+
+            if (resultFlow > 0) {
+                if (!isStartFlow) {
+                    startFlow = new Date();
+                    isStartFlow = true;
+                }
+
+                if (maxFlow < resultFlow) {
+                    maxFlow = resultFlow;
+                    timeToMaxFlow = new Date();
+                    System.out.println("timeToMaxFlow111====" + timeToMaxFlow);
+                }
+
+            }
+
+            mSeries1.appendData(new DataPoint(graph1LastXValue, (double) (numberOne)), true, 10000);
+            doubleListX2.add((double) resultFlow);
+            mSeries2.appendData(new DataPoint(graph1LastXValue, (double) (resultFlow)), true, 10000);
+
+            flow = numberOne;
+
+            System.out.println("Double====" + (double) numberOne);
+            System.out.println("Double====" + (double) resultFlow);
 
         }
 
     }
-
-
 
 }

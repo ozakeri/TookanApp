@@ -39,14 +39,26 @@ public class Customer implements Parcelable, Serializable {
     @ColumnInfo(name = "comment")
     private String comment;
 
-    @ColumnInfo(name = "startTime")
-    private String startTime;
+    @ColumnInfo(name = "startVoidedTime")
+    private String startVoidedTime;
 
-    @ColumnInfo(name = "endTime")
-    private String endTime;
+    @ColumnInfo(name = "endVoidedTime")
+    private String endVoidedTime;
 
     @ColumnInfo(name = "delayTime")
     private String delayTime;
+
+    @ColumnInfo(name = "startFlowTime")
+    private String startFlowTime;
+
+    @ColumnInfo(name = "endFlowTime")
+    private String endFlowTime;
+
+    @ColumnInfo(name = "timeToMaxFlow")
+    private String timeToMaxFlow;
+
+    @ColumnInfo(name = "voidedVolume")
+    private String voidedVolume;
 
 
     public Customer() {
@@ -62,9 +74,13 @@ public class Customer implements Parcelable, Serializable {
         flowValue = in.readString();
         volumeValue = in.readString();
         comment = in.readString();
-        startTime = in.readString();
-        endTime = in.readString();
+        startVoidedTime = in.readString();
+        endVoidedTime = in.readString();
         delayTime = in.readString();
+        startFlowTime = in.readString();
+        endFlowTime = in.readString();
+        timeToMaxFlow = in.readString();
+        voidedVolume = in.readString();
     }
 
     public static final Creator<Customer> CREATOR = new Creator<Customer>() {
@@ -151,20 +167,20 @@ public class Customer implements Parcelable, Serializable {
         this.comment = comment;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getStartVoidedTime() {
+        return startVoidedTime;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setStartVoidedTime(String startVoidedTime) {
+        this.startVoidedTime = startVoidedTime;
     }
 
-    public String getEndTime() {
-        return endTime;
+    public String getEndVoidedTime() {
+        return endVoidedTime;
     }
 
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public void setEndVoidedTime(String endVoidedTime) {
+        this.endVoidedTime = endVoidedTime;
     }
 
     public String getDelayTime() {
@@ -173,6 +189,38 @@ public class Customer implements Parcelable, Serializable {
 
     public void setDelayTime(String delayTime) {
         this.delayTime = delayTime;
+    }
+
+    public String getStartFlowTime() {
+        return startFlowTime;
+    }
+
+    public void setStartFlowTime(String startFlowTime) {
+        this.startFlowTime = startFlowTime;
+    }
+
+    public String getEndFlowTime() {
+        return endFlowTime;
+    }
+
+    public void setEndFlowTime(String endFlowTime) {
+        this.endFlowTime = endFlowTime;
+    }
+
+    public String getTimeToMaxFlow() {
+        return timeToMaxFlow;
+    }
+
+    public void setTimeToMaxFlow(String timeToMaxFlow) {
+        this.timeToMaxFlow = timeToMaxFlow;
+    }
+
+    public String getVoidedVolume() {
+        return voidedVolume;
+    }
+
+    public void setVoidedVolume(String voidedVolume) {
+        this.voidedVolume = voidedVolume;
     }
 
     @Override
@@ -191,8 +239,12 @@ public class Customer implements Parcelable, Serializable {
         parcel.writeString(flowValue);
         parcel.writeString(volumeValue);
         parcel.writeString(comment);
-        parcel.writeString(startTime);
-        parcel.writeString(endTime);
+        parcel.writeString(startVoidedTime);
+        parcel.writeString(endVoidedTime);
         parcel.writeString(delayTime);
+        parcel.writeString(startFlowTime);
+        parcel.writeString(endFlowTime);
+        parcel.writeString(timeToMaxFlow);
+        parcel.writeString(voidedVolume);
     }
 }
