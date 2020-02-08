@@ -1,6 +1,7 @@
 package com.tokan.ir.fragment;
 
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,7 +30,6 @@ import com.tokan.ir.widget.BTextView;
 import org.greenrobot.eventbus.EventBus;
 
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -210,6 +210,13 @@ public class CompeleteTestFragment extends Fragment {
                         }
                         saveData(customer);
                         gotoFragment(new ReportFragment(), "ReportFragment");
+
+                        Intent i = getActivity().getPackageManager().
+                                getLaunchIntentForPackage(getActivity().getPackageName());
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        System.exit(0);
                     }
                 });
             }
@@ -309,7 +316,7 @@ public class CompeleteTestFragment extends Fragment {
 
         try {
             //d1 = format.parse(dateStart);
-           // d2 = format.parse(dateStop);
+            // d2 = format.parse(dateStop);
 
             //in milliseconds
             long diff = d2.getTime() - d1.getTime();
@@ -338,7 +345,7 @@ public class CompeleteTestFragment extends Fragment {
 
         try {
             //d1 = format.parse(dateStart);
-           // d2 = format.parse(dateStop);
+            // d2 = format.parse(dateStop);
 
             //in milliseconds
             long diff = d2.getTime() - d1.getTime();

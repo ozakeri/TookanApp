@@ -233,7 +233,7 @@ public class SicklyInfoFragment extends Fragment implements OnBackPressedListene
     }
 
 
-    private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
+   /* private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
         EventBus.getDefault().post(new EventModel(fragmentName));
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -250,7 +250,7 @@ public class SicklyInfoFragment extends Fragment implements OnBackPressedListene
         fragmentTransaction.commit();
 
         FragmentUtil.printActivityFragmentList(fragmentManager);
-    }
+    }*/
 
   /*  public void backPress(View view){
         EventBus.getDefault().post(new EventModel(""));
@@ -338,5 +338,14 @@ public class SicklyInfoFragment extends Fragment implements OnBackPressedListene
             }
         });
 
+    }
+
+    private void gotoFragment(Fragment fragment, String name,Bundle bundle) {
+        EventBus.getDefault().post(new EventModel(name));
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragment.setArguments(bundle);
+        transaction.replace(R.id.home_container, fragment);
+        transaction.commit();
     }
 }

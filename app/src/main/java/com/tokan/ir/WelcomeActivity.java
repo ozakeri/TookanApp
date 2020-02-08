@@ -48,9 +48,6 @@ public class WelcomeActivity extends AppCompatActivity {
     @BindView(R.id.btn_start)
     AppCompatButton btnStart;
 
-    @BindView(R.id.btn_backup)
-    BTextView btn_backup;
-
     private int[] layouts;
     private TextView[] dots;
     private MyViewPagerAdapter myViewPagerAdapter;
@@ -69,8 +66,6 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         ButterKnife.bind(this);
-
-        btn_backup.setText("بازیابی پشتیبان");
 
         // layouts of all welcome sliders
         // add few more layouts if you want
@@ -153,14 +148,12 @@ public class WelcomeActivity extends AppCompatActivity {
                 //btn_back.setVisibility(View.GONE);
                 btnNext.setVisibility(View.GONE);
                 btnStart.setVisibility(View.VISIBLE);
-                btn_backup.setVisibility(View.VISIBLE);
             } else {
                 // still pages are left
                 btnNext.setVisibility(View.VISIBLE);
                 btnNext.setText("بعدی");
                // btn_back.setVisibility(View.VISIBLE);
                 btnStart.setVisibility(View.GONE);
-                btn_backup.setVisibility(View.GONE);
             }
         }
 

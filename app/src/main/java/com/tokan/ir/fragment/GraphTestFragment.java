@@ -50,6 +50,7 @@ public class GraphTestFragment extends Fragment {
     private LineGraphSeries<DataPoint> mSeries1;
     private LineGraphSeries<DataPoint> mSeries2;
     private double graph1LastXValue = 0;
+    private double graph1LastXValue2 = 0;
     private String nationalCode;
     private String name;
     private String birthDate;
@@ -82,7 +83,8 @@ public class GraphTestFragment extends Fragment {
     private String msg = null;
     private GraphTestFragment.CommunicationThread commThread;
     private int flow = 0, resultFlow = 0;
-    private int maxFlow = 0 , voidedVolume = 0;
+    private int maxFlow = 0, voidedVolume = 0;
+    private boolean update = false;
 
     public GraphTestFragment() {
         // Required empty public constructor
@@ -151,11 +153,6 @@ public class GraphTestFragment extends Fragment {
                     endFlow = Calendar.getInstance().getTime();
                     saveData();
 
-                    try {
-                        serverSocket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 } else {
                     btn_action.setText("پایان تست");
                     isActionClick = true;
@@ -200,11 +197,10 @@ public class GraphTestFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putParcelable("customer", customer);
         gotoFragment(new CompeleteTestFragment(), "CompeleteTestFragment", bundle);
-
     }
 
 
-    private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
+ /*   private void gotoFragment(Fragment fragment, String fragmentName, Bundle bundle) {
         EventBus.getDefault().post(new EventModel(fragmentName));
         FragmentManager fragmentManager = getFragmentManager();
         Fragment frg = FragmentUtil.getFragmentByTagName(fragmentManager, fragmentName);
@@ -220,7 +216,7 @@ public class GraphTestFragment extends Fragment {
         fragmentTransaction.commit();
 
         FragmentUtil.printActivityFragmentList(fragmentManager);
-    }
+    }*/
 
 
     public void getData() {
@@ -243,11 +239,10 @@ public class GraphTestFragment extends Fragment {
 
                 try {
 
-                    if (!serverSocket.isClosed()) {
                         socket = serverSocket.accept();
                         commThread = new GraphTestFragment.CommunicationThread(socket);
                         new Thread(commThread).start();
-                    }
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -325,6 +320,7 @@ public class GraphTestFragment extends Fragment {
             }
 
             graph1LastXValue += 0.5d;
+            graph1LastXValue2 += 0.5d;
             doubleListX1.add((double) (numberOne));
 
 
@@ -346,9 +342,10 @@ public class GraphTestFragment extends Fragment {
 
             }
 
+
             mSeries1.appendData(new DataPoint(graph1LastXValue, (double) (numberOne)), true, 10000);
             doubleListX2.add((double) resultFlow);
-            mSeries2.appendData(new DataPoint(graph1LastXValue, (double) (resultFlow)), true, 10000);
+            mSeries2.appendData(new DataPoint(graph1LastXValue2, (double) (resultFlow)), true, 10000);
 
             flow = numberOne;
 
@@ -359,4 +356,24 @@ public class GraphTestFragment extends Fragment {
 
     }
 
+    private void gotoFragment(Fragment fragment, String name,Bundle bundle) {
+        EventBus.getDefault().post(new EventModel(name));
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragment.setArguments(bundle);
+        transaction.replace(R.id.home_container, fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Thread.currentThread().isInterrupted();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Thread.currentThread().isInterrupted();
+    }
 }
